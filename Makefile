@@ -1,6 +1,6 @@
 CPP=g++
 CC=gcc
-CFLAGS=-g -Og -flto -Idavelog -I.
+CFLAGS=-Wall -g -Og -Idavelog -I.
 CPPFLAGS=-std=c++20 -DJSON_DIAGNOSTICS ${CFLAGS}
 
 SRCS=$(wildcard *.cpp) $(wildcard davelog/src/*.cpp)

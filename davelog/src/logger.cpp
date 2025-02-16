@@ -15,12 +15,18 @@ void Logger_c::Log(
 
     const dave::time::DTime tstamp;
 
+    va_list args_copy;
+    va_copy(args_copy, args);
+
     const int size = vsnprintf(nullptr, 0, fmt, args);
     if (size < 0) {
+        va_end(args_copy);
         return;
     }
+
     std::vector<char> buf(size + 1);
-    vsnprintf(buf.data(), buf.size(), fmt, args);
+    vsnprintf(buf.data(), buf.size(), fmt, args_copy);
+    va_end(args_copy);
     const std::string message(buf.data());
 
     const Message_c m = {
