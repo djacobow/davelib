@@ -2,6 +2,7 @@
 #include <string>
 #include <unistd.h>
 #include <cstdio>
+#include <cstdlib>
 
 #include "dlog/subscriber.h"
 #include "dlog/colors.h"
@@ -26,7 +27,9 @@ void Subscriber_Base_c::Close() {};
 
 Subscriber_FilePtr_c::Subscriber_FilePtr_c(FILE *of, LevelMask_c lm, Style_e s) :
     Subscriber_Base_c(lm, s),
-    ofile_(of) {};
+    ofile_(of),
+    colorizable_((of == stdout) && isatty(fileno(of)) && !getenv("DLOG_NOCOLOR")) {
+}
 
 void Subscriber_FilePtr_c::Close() {
     fclose(ofile_);
@@ -34,8 +37,7 @@ void Subscriber_FilePtr_c::Close() {
 
 void Subscriber_FilePtr_c::LogInternal(const Message_c &m) {
     auto os = Style(style_, m);
-
-    if ((ofile_ == stdout) && isatty(fileno(ofile_))) {
+    if (colorizable_) {
         Colorize(m.level, os);
     }
 

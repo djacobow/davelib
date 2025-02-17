@@ -44,6 +44,7 @@ class Subscriber_FilePtr_c: public Subscriber_Base_c {
 
   private:
     FILE *ofile_;
+    const bool colorizable_;
     void LogInternal(const Message_c &m) override;
 };
 
