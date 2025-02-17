@@ -1,8 +1,8 @@
 #pragma once
 
-#include "davelog/message.h"
+#include "dlog/message.h"
 
-namespace dave::log {
+namespace dlog {
 
 enum class Style_e {
     json,

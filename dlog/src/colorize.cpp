@@ -1,23 +1,18 @@
 #include <unistd.h>
 
-#include "davelog/colorize.h"
-#include "davelog/colors.h"
+#include "dlog/colorize.h"
+#include "dlog/colors.h"
 
-namespace dave::log {
+namespace dlog {
 
 std::string &Colorize(Level_e l, std::string &os) {
-    LevelMask_c important;
-    important.AtOrAbove(Level_e::notice);
-    LevelMask_c unimportant;
-    unimportant.AtOrBelow(Level_e::debug);
-
-    auto mask = LevelToMask(l);
-
     ColorTuple_t ct;
+    static const auto important   = LevelMask_c().AtOrAbove(Level_e::notice);
+    static const auto unimportant = LevelMask_c().AtOrBelow(Level_e::debug);
 
-    if (mask & important.GetMask()) {
+    if (important.Contains(l)) {
         ct.m_ = ColorMode_e::bold;
-    } else if (mask & unimportant.GetMask()) {
+    } else if (unimportant.Contains(l)) {
         ct.m_ = ColorMode_e::dim;
     } 
 
@@ -29,8 +24,8 @@ std::string &Colorize(Level_e l, std::string &os) {
             ct.fg_ = Color_e::red;
             break;
         case Level_e::fatal:
-            ct.fg_ = Color_e::red;
-            ct.bg_ = Color_e::white;
+            ct.fg_ = Color_e::white;
+            ct.bg_ = Color_e::red;
             break;
         case Level_e::notice:
             ct.fg_ = Color_e::cyan;

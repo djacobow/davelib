@@ -1,9 +1,9 @@
-#include "davelog/levels.h"
-#include "davelog/enum_range.h"
+#include "dlog/levels.h"
+#include "dlog/enum_range.h"
 
 #include <vector>
 
-namespace dave::log {
+namespace dlog {
 
 EH_IMPL_ENUM_STRINGIFIER(get_Level_e_str, Level_e, LOG_LEVELS);
 
@@ -16,7 +16,7 @@ constexpr LevelMask_c &LevelMask_c::None() {
 };
 
 LevelMask_c &LevelMask_c::All() {
-    for (auto l : enum_range(Level_e::begin, Level_e::end)) {
+    for (const auto l : enum_range(Level_e::begin, Level_e::end)) {
         Set(l);
     }
     return *this;
@@ -64,5 +64,9 @@ uint32_t LevelToMask(const Level_e &l) {
     return 0x1 << static_cast<std::underlying_type_t<Level_e>>(l);
 }
 
-}  // namespace dave::log
+bool LevelMask_c::Contains(Level_e l) const {
+    return LevelToMask(l) & GetMask();
+}
+
+}  // namespace dlog
 

@@ -3,12 +3,12 @@
 #include <unistd.h>
 #include <cstdio>
 
-#include "davelog/subscriber.h"
-#include "davelog/colors.h"
-#include "davelog/formatters.h"
-#include "davelog/colorize.h"
+#include "dlog/subscriber.h"
+#include "dlog/colors.h"
+#include "dlog/formatters.h"
+#include "dlog/colorize.h"
 
-namespace dave::log {
+namespace dlog {
 
 static const constexpr std::string newline("\n");
 

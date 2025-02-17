@@ -1,7 +1,7 @@
-#include "davelog/styles.h"
-#include "davelog/formatters.h"
+#include "dlog/styles.h"
+#include "dlog/formatters.h"
 
-namespace dave::log {
+namespace dlog {
 
 std::string Style(Style_e s, const Message_c &m) {
     std::string os;

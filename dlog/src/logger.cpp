@@ -1,9 +1,9 @@
 #include <string>
 #include <vector>
 #include <cstdarg>
-#include "davelog/logger.hpp"
+#include "dlog/logger.hpp"
 
-namespace dave::log {
+namespace dlog {
 
 void Logger_c::Log(
     const Level_e &level,
@@ -82,5 +82,5 @@ void Logger_c::AddSubscriber(
     subscribers_[name] = std::move(s);
 }
 
-}  // namespace dave::log
+}  // namespace dlog
 

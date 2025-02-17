@@ -3,9 +3,9 @@
 #include <string>
 #include <nlohmann/json.hpp>
 
-#include "davelog/formatters.h"
+#include "dlog/formatters.h"
 
-namespace dave::log {
+namespace dlog {
 
 std::string ToJS(const Message_c &m) {
     const nlohmann::json j = {
@@ -21,7 +21,7 @@ std::string ToJS(const Message_c &m) {
 
 std::string ToPrettyDetails(const Message_c &m) {
     std::stringstream os;
-    os << m.tstamp.Iso8601() << " | " << std::setw(10) << std::setfill(' ')
+    os << m.tstamp.Iso8601() << " | " << std::setw(8) << std::setfill(' ')
        << get_Level_e_str(m.level) << " | ";
     std::stringstream fs;
     fs << m.filename << ":" << m.line << " " << m.funcname << "()";
@@ -33,7 +33,7 @@ std::string ToPrettyDetails(const Message_c &m) {
 std::string ToTightDetails(const Message_c &m) {
     std::stringstream os;
     os << m.tstamp.Iso8601() << " | "
-       << get_Level_e_str(m.level) << " | "
+       << std::setw(8) << get_Level_e_str(m.level) << " | "
        << m.filename << ":" << m.line << " " << m.funcname << "()" << " | "
        << m.message;
     return os.str();

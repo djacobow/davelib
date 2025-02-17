@@ -4,19 +4,18 @@
 #include <vector>
 #include <string>
 
-#include "davelog/enum_helper.h"
-#include "davelog/levels_names.h"
+#include "dlog/enum_helper.h"
+#include "dlog/levels_names.h"
 
-namespace dave::log {
+namespace dlog {
 
-EH_DECL_ENUM(Level_e, LOG_LEVELS, very_verbose, fatal);
+EH_DECL_ENUM(Level_e, LOG_LEVELS, vverbose, fatal);
 EH_DECL_ENUM_STRINGIFIER(get_Level_e_str, Level_e);
 
 class LevelMask_c {
   public:
     LevelMask_c();
     constexpr LevelMask_c &None();
-    //constexpr LevelMask_c &all();
     LevelMask_c &All();
     LevelMask_c &AtOrAbove(Level_e l);
     LevelMask_c &AtOrBelow(Level_e l);
@@ -27,6 +26,7 @@ class LevelMask_c {
     uint32_t GetMask() const {
         return mask_;
     }
+    bool Contains(Level_e l) const;
 
   private:
     uint32_t mask_;
@@ -34,5 +34,5 @@ class LevelMask_c {
 
 uint32_t LevelToMask(const Level_e &l);
 
-}  // namespace dave::log
+}  // namespace dlog
 

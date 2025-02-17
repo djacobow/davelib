@@ -6,11 +6,11 @@
 #include <map>
 #include <cstdarg>
 
-#include "davelog/subscriber.h"
-#include "davelog/levels.h"
-#include "davelog/styles.h"
+#include "dlog/subscriber.h"
+#include "dlog/levels.h"
+#include "dlog/styles.h"
 
-namespace dave::log {
+namespace dlog {
 
 class stream_end_c {
   public:
@@ -66,5 +66,5 @@ class Logger_c {
     std::ostringstream ss_;
 };
 
-}  // namespace dave::log
+}  // namespace dlog
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "davelog/levels.h"
+#include "dlog/levels.h"
 
-namespace dave::log {
+namespace dlog {
 
 std::string &Colorize(Level_e l, std::string &os);
 

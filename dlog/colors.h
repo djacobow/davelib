@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace dave::log {
+namespace dlog {
 
 enum class Color_e {
     black = 0,
@@ -17,11 +17,16 @@ enum class Color_e {
 };
 
 enum class ColorMode_e {
-    normal,
+    normal = 0,
     bold,
-    underline,
     dim,
+    italic,
+    underline,
     blink,
+    fastblink,
+    reverse,
+    hide,
+    strikethrough,
     nochange,
 };
 

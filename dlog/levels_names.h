@@ -1,7 +1,7 @@
 #pragma once
 
 #define LOG_LEVELS(X) \
-    X(very_verbose) \
+    X(vverbose) \
     X(verbose) \
     X(debug) \
     X(info) \

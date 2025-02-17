@@ -6,7 +6,7 @@
 #endif
 
 #include <stddef.h>
-#include "davelog/levels_names.h"
+#include "dlog/levels_names.h"
 
 #ifdef __cplusplus
 extern "C" {

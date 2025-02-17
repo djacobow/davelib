@@ -1,4 +1,4 @@
-#include "davelog/c_helpers.h"
+#include "dlog/c_helpers.h"
 
 void foobs() {
     L(info, "Hi from foobs!");
