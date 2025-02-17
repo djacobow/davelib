@@ -36,7 +36,7 @@ static std::string maybeSkip(bool skip, const std::string &s) {
 }
 
 std::string ToTightDetails(const Message_c &m) {
-    static Message_c last_m;
+    static Message_c last_m = { .tstamp = dave::time::DTime(0) };
     std::stringstream os;
     os << maybeSkip(last_m.tstamp.SameMillis(m.tstamp), m.tstamp.Iso8601()) << " | "
        << std::setw(8)
