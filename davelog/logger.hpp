@@ -32,6 +32,21 @@ class Logger_c {
     void AddSubscriber(const std::string &name, std::unique_ptr<Subscriber_Base_c> s);
 
     void Log(const Message_c &m);
+
+    template<Level_e level>
+    void Log(
+        const std::string &filename,
+        const size_t line,
+        const std::string &funcname,
+        const char *fmt,
+        ...
+    ) {
+        va_list args;
+        va_start(args, fmt);
+        Log(level, filename, line, funcname, fmt, args);
+        va_end(args);
+    }
+
     void Log(
         const Level_e &level,
         const std::string &filename,

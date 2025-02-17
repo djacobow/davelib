@@ -4,16 +4,7 @@
 #include <vector>
 
 #include "davelog/enum_helper.h"
-
-#define LOG_LEVELS(X) \
-    X(very_verbose) \
-    X(verbose) \
-    X(debug) \
-    X(info) \
-    X(notice) \
-    X(warning) \
-    X(error) \
-    X(fatal)
+#include "davelog/levels_names.h"
 
 namespace dave::log {
 

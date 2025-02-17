@@ -6,6 +6,7 @@
 #endif
 
 #include <stddef.h>
+#include "davelog/levels_names.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,20 +14,14 @@ extern "C" {
 
 #define C_LOG_FN_DECL(level) void DaveLog_##level(const char *filename, size_t line, const char *funcname, const char *fmt, ...);
 
-C_LOG_FN_DECL(very_verbose);
-C_LOG_FN_DECL(verbose);
-C_LOG_FN_DECL(debug);
-C_LOG_FN_DECL(info);
-C_LOG_FN_DECL(notice);
-C_LOG_FN_DECL(warning);
-C_LOG_FN_DECL(error);
-C_LOG_FN_DECL(fatal);
+// this declares a c function that wraps the c++, for each level names in the macro in levels_names.h
+LOG_LEVELS(C_LOG_FN_DECL);
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#define LOG_LEVEL(l, m, ...) \
+#define __LOG_LEVEL(l, m, ...) \
     do { \
         DaveLog_##l(__FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
     } while (0)
@@ -36,10 +31,6 @@ C_LOG_FN_DECL(fatal);
         DaveLog_##l(__FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
     }
 
-#define L_VVERBOSE(m, ...) LOG_LEVEL(very_verbose, m, ##__VA_ARGS__)
-#define L_VERBOSE(m, ...)  LOG_LEVEL(verbose,      m, ##__VA_ARGS__)
-#define L_INFO(m, ...)     LOG_LEVEL(info,         m, ##__VA_ARGS__)
-#define L_NOTICE(m, ...)   LOG_LEVEL(notice,       m, ##__VA_ARGS__)
-#define L_WARNING(m, ...)  LOG_LEVEL(warning,      m, ##__VA_ARGS__)
-#define L_ERROR(m, ...)    LOG_LEVEL(error,        m, ##__VA_ARGS__)
-#define L_FATAL(m, ...)    LOG_LEVEL(fatal,        m, ##__VA_ARGS__)
+
+#define L(l, m, ...) __LOG_LEVEL(l, m, ##__VA_ARGS__)
+

@@ -1,8 +1,8 @@
 #include "davelog/c_helpers.h"
 
 void foobs() {
-    L_INFO("Hi from foobs!");
-    L_ERROR("Something went wrong in C-land");
-    L_NOTICE("Something requires notification from C-land");
+    L(info, "Hi from foobs!");
+    L(error, "Something went wrong in C-land");
+    L(notice, "Something requires notification from C-land");
 };
 

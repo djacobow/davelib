@@ -7,45 +7,38 @@
 
 #include "davelog/logger.hpp"
 
-#define LOG_DONE() dave::log::Logger_c::Get().Done()
+// a shortcut to conjure up the logger object:
+#define LOGGER dave::log::Logger_c::Get()
 
-#define LOG_LEVEL(l, m, ...) \
+// to force he logger to close open files:
+#define LOG_DONE() LOGGER.Done()
+
+#define __LOG_LEVEL(l, m, ...) \
     do { \
-        dave::log::Logger_c::Get() \
-            .Log(l, __FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
+        dave::log::Logger_c::Get().Log<dave::log::Level_e::l>(__FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
     } while (0)
 
-#define LOG_IF(b, l, m, ...) \
+#define __LOG_IF(b, l, m, ...) \
     if (b) { \
-        dave::log::Logger_c::Get() \
-            .Log(l, __FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
+        dave::log::Logger_c::Get().Log<dave::log::Level_e::l>(__FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
     }
 
-// clang-format off
-#define L_VVERBOSE(m, ...) LOG_LEVEL(dave::log::Level_e::very_verbose, m, ##__VA_ARGS__)
-#define L_VERBOSE(m, ...)  LOG_LEVEL(dave::log::Level_e::verbose,      m, ##__VA_ARGS__)
-#define L_DEBUG(m, ...)    LOG_LEVEL(dave::log::Level_e::debug,        m, ##__VA_ARGS__)
-#define L_INFO(m, ...)     LOG_LEVEL(dave::log::Level_e::info,         m, ##__VA_ARGS__)
-#define L_NOTICE(m, ...)   LOG_LEVEL(dave::log::Level_e::notice,       m, ##__VA_ARGS__)
-#define L_WARNING(m, ...)  LOG_LEVEL(dave::log::Level_e::warning,      m, ##__VA_ARGS__)
-#define L_ERROR(m, ...)    LOG_LEVEL(dave::log::Level_e::error,        m, ##__VA_ARGS__)
-#define L_FATAL(m, ...)    LOG_LEVEL(dave::log::Level_e::fatal,        m, ##__VA_ARGS__)
+// This is the *primary* way to call the logger using the printf syntax
+#define L(level, m, ...) \
+    __LOG_LEVEL(level, m, ##__VA_ARGS__)
 
-#define L_WARN_IF(b, ...)  LOG_LEVEL_IF(b, dave::log::Level_e::warning, m, ##__VA_ARGS__)
-#define L_ERROR_IF(b, ...) LOG_LEVEL_IF(b, dave::log::Level_e::error,   m, ##__VA_ARGS__)
-#define L_FATAL_IF(b, ...) LOG_LEVEL_IF(b, dave::log::Level_e::fatal,   m, ##__VA_ARGS__)
 
-#define L_ENDL_LEVEL(l) \
+#define L_IF(level, b, m, ...) \
+    __LOG_IF(b, level, m, ##__VA_ARGS__)
+
+
+#define __L_ENDL_LEVEL(l) \
     dave::log::stream_end_c { \
         l, __FILE__, __LINE__, __func__ \
     }
 
-#define L_ENDL_VVERBOSE  L_ENDL_LEVEL(dave::log::Level_e::very_verbose)
-#define L_ENDL_VERBOSE   L_ENDL_LEVEL(dave::log::Level_e::verbose)
-#define L_ENDL_DEBUG     L_ENDL_LEVEL(dave::log::Level_e::debug)
-#define L_ENDL_INFO      L_ENDL_LEVEL(dave::log::Level_e::info)
-#define L_ENDL_NOTICE    L_ENDL_LEVEL(dave::log::Level_e::notice)
-#define L_ENDL_WARNING   L_ENDL_LEVEL(dave::log::Level_e::warning)
-#define L_ENDL_ERROR     L_ENDL_LEVEL(dave::log::Level_e::error)
-#define L_ENDL_FATAL     L_ENDL_LEVEL(dave::log::Level_e::fatal)
+// when using the stream syntax, you end the message with one of these
+// to indicate what loglevel should receive the message
+#define L_ENDL(l)        __L_ENDL_LEVEL(dave::log::Level_e::l)
+
 // clang-format on
