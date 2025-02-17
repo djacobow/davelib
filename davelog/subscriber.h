@@ -29,11 +29,6 @@ class Subscriber_Base_c {
     Style_e style_;
     LevelMask_c level_mask_;
 
-    std::string ToJS(const Message_c &m) const;
-    std::string ToPrettyDetails(const Message_c &m) const;
-    std::string ToTightDetails(const Message_c &m) const;
-    std::string ToPlain(const Message_c &m) const;
-
   private:
     virtual void LogInternal(const Message_c &m) = 0;
 };

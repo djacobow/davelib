@@ -1,5 +1,7 @@
 #pragma once
 
+#include "davelog/message.h"
+
 namespace dave::log {
 
 enum class Style_e {
@@ -9,6 +11,8 @@ enum class Style_e {
     plain,
     decorated_errors,
 };
+
+std::string Style(Style_e style, const Message_c &m);
 
 }
 

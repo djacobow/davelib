@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 #include "davelog/enum_helper.h"
 #include "davelog/levels_names.h"
@@ -18,6 +19,7 @@ class LevelMask_c {
     //constexpr LevelMask_c &all();
     LevelMask_c &All();
     LevelMask_c &AtOrAbove(Level_e l);
+    LevelMask_c &AtOrBelow(Level_e l);
     LevelMask_c &Clear(Level_e l);
     LevelMask_c &Set(Level_e l);
     LevelMask_c &Clear(const std::vector<Level_e> &ls);
@@ -29,4 +31,8 @@ class LevelMask_c {
   private:
     uint32_t mask_;
 };
-}
+
+uint32_t LevelToMask(const Level_e &l);
+
+}  // namespace dave::log
+

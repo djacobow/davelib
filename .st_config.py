@@ -12,10 +12,6 @@ CONFIG = {
     },
     'code_search_paths': {
         'davelog': {
-            'davelog': {
-                'default': True,
-                'include': ['davelog'],
-            },
             'root': {
                 'default': True,
                 'include': ['.' ],

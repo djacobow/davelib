@@ -29,13 +29,20 @@ LevelMask_c &LevelMask_c::AtOrAbove(Level_e l) {
     return *this;
 }
 
+LevelMask_c &LevelMask_c::AtOrBelow(Level_e l) {
+    for (auto l : enum_range(Level_e::begin, l)) {
+        Set(l);
+    }
+    return *this;
+}
+
 LevelMask_c &LevelMask_c::Clear(Level_e l) {
-    mask_ &= ~(0x1 << static_cast<std::underlying_type_t<decltype(l)> >(l));
+    mask_ &= ~(0x1 << static_cast<std::underlying_type_t<Level_e>>(l));
     return *this;
 }
 
 LevelMask_c &LevelMask_c::Set(Level_e l) {
-    mask_ |= (0x1 << static_cast<std::underlying_type_t<decltype(l)> >(l));
+    mask_ |= (0x1 << static_cast<std::underlying_type_t<Level_e>>(l));
     return *this;
 }
 
@@ -51,6 +58,10 @@ LevelMask_c &LevelMask_c::Set(const std::vector<Level_e> &ls) {
         Set(l);
     }
     return *this;
+}
+
+uint32_t LevelToMask(const Level_e &l) {
+    return 0x1 << static_cast<std::underlying_type_t<Level_e>>(l);
 }
 
 }  // namespace dave::log
