@@ -15,12 +15,12 @@
 
 #define __LOG_LEVEL(l, m, ...) \
     do { \
-        dave::log::Logger_c::Get().Log<dave::log::Level_e::l>(__FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
+        dave::log::Logger_c::Get().Log(dave::log::Level_e::l, __FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
     } while (0)
 
 #define __LOG_IF(b, l, m, ...) \
     if (b) { \
-        dave::log::Logger_c::Get().Log<dave::log::Level_e::l>(__FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
+        dave::log::Logger_c::Get().Log(dave::log::Level_e::l, __FILE__, __LINE__, __func__, m, ##__VA_ARGS__); \
     }
 
 // This is the *primary* way to call the logger using the printf syntax
