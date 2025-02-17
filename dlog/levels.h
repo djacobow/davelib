@@ -23,9 +23,6 @@ class LevelMask_c {
     LevelMask_c &Set(Level_e l);
     LevelMask_c &Clear(const std::vector<Level_e> &ls);
     LevelMask_c &Set(const std::vector<Level_e> &ls);
-    uint32_t GetMask() const {
-        return mask_;
-    }
     bool Contains(Level_e l) const;
 
   private:

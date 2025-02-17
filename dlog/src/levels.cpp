@@ -65,7 +65,7 @@ uint32_t LevelToMask(const Level_e &l) {
 }
 
 bool LevelMask_c::Contains(Level_e l) const {
-    return LevelToMask(l) & GetMask();
+    return LevelToMask(l) & mask_;
 }
 
 }  // namespace dlog

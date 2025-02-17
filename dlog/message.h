@@ -9,11 +9,11 @@ namespace dlog {
 
 class Message_c {
   public:
-    const dave::time::DTime tstamp;
-    const Level_e level;
-    const std::string filename;
-    const size_t line;
-    const std::string funcname;
+    dave::time::DTime tstamp;
+    Level_e level;
+    std::string filename;
+    size_t line;
+    std::string funcname;
     std::string message;
 };
 

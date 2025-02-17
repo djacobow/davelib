@@ -13,8 +13,7 @@ namespace dlog {
 static const constexpr std::string newline("\n");
 
 void Subscriber_Base_c::Log(const Message_c &m) {
-    auto mask = LevelToMask(m.level);
-    if (mask & level_mask_.GetMask()) {
+    if (level_mask_.Contains(m.level)) {
         LogInternal(m);
     }
 }

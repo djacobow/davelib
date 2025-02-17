@@ -41,8 +41,14 @@ class DTime {
         return ts_;
     };
 
+    bool SameMillis(const DTime &other) const {
+        return Millis() == other.Millis();
+    }
+
   private:
     std::chrono::time_point<Clock> ts_;
 };
+
+bool operator==(const DTime &l, const DTime &r);
 
 }  // namespace dave::time
