@@ -1,10 +1,12 @@
+NPROCS = $(shell grep -c 'processor' /proc/cpuinfo)
+MAKEFLAGS += -j$(NPROCS)
 CPP=g++
 CC=gcc
-CFLAGS=-Wall -g -Og -I.
+CFLAGS=-Wall -Werror -Wpedantic -g -Og -I.
 CPPFLAGS=-std=c++20 ${CFLAGS}
 DEPDIR=./deps
 
-SRCS=$(wildcard *.cpp) $(wildcard d*/src/*.cpp)
+SRCS=$(wildcard *.cpp) $(wildcard dave/src/*.cpp)
 OBJS=$(SRCS:.cpp=.o)
 
 C_SRCS=$(wildcard *.c)
@@ -19,6 +21,11 @@ DEPS += $(patsubst %.o, $(DEPDIR)/%.d, $(C_OBJS))
 .PHONY: run
 run: demo
 	./demo
+
+.PHONY: tidy
+tidy: $(SRCS)
+	clang-tidy $(SRCS) -- $(CPPFLAGS)
+
 
 .PHONY: clean
 clean:
@@ -35,7 +42,7 @@ $(DEPDIR)/%.d: %.cpp $(DEPDIR)
 	$(CPP) $(CPPFLAGS) -M $< > $@
 
 $(DEPDIR):
-	@[ ! -d $(DEPDIR)/dlog/src ] && mkdir -p $(DEPDIR)/dlog/src $(DEPDIR)/derr/src
+	@[ ! -d $(DEPDIR)/dave/src ] && mkdir -p $(DEPDIR)/dave/src
 
 %.o:%.cpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@

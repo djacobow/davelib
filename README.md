@@ -18,3 +18,9 @@ There are many logger libraries out there, including some sophisticated
 ones. I like to use simple things that I understand and can extend,
 and this is particularly useful in embedded contexts, so I wrote this.
 
+## Extras
+
+There is also a simple "`Error`" library, including an optional-like
+`ValueOr<T>` type, and macros to make it easy to use.
+
+

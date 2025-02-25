@@ -1,8 +1,9 @@
 #include <string>
-#include "dlog/init.h"
-#include "dlog/logger.hpp"
+#include "dave/init.h"
+#include "dave/logger.hpp"
+#include "dave/subscriber.h"
 
-namespace dlog {
+namespace dave::log {
 
 void Init(const InitList_t &initlist) {
     for (const auto &iv : initlist) {
@@ -17,5 +18,4 @@ void Init(const InitList_t &initlist) {
     }
 }
 
-}  // namespace dlog
-
+}  // namespace dave::log

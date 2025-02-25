@@ -6,7 +6,7 @@
 #endif
 
 #include <stddef.h>
-#include "dlog/levels_names.h"
+#include "dave/levels_names.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +15,7 @@ extern "C" {
 #define C_LOG_FN_DECL(level) void DaveLog_##level(const char *filename, size_t line, const char *funcname, const char *fmt, ...);
 
 // this declares a c function that wraps the c++, for each level names in the macro in levels_names.h
-LOG_LEVELS(C_LOG_FN_DECL);
+LOG_LEVELS(C_LOG_FN_DECL)
 
 #ifdef __cplusplus
 } // extern "C"
@@ -32,5 +32,5 @@ LOG_LEVELS(C_LOG_FN_DECL);
     }
 
 
-#define L(l, m, ...) __LOG_LEVEL(l, m, ##__VA_ARGS__)
+#define L_(l, m, ...) __LOG_LEVEL(l, m, ##__VA_ARGS__)
 

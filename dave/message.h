@@ -2,10 +2,10 @@
 
 #include <string>
 
-#include "dlog/levels.h"
-#include "dlog/dtime.h"
+#include "dave/levels.h"
+#include "dave/dtime.h"
 
-namespace dlog {
+namespace dave::log {
 
 class Message_c {
   public:

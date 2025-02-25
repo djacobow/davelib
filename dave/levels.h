@@ -4,10 +4,10 @@
 #include <vector>
 #include <string>
 
-#include "dlog/enum_helper.h"
-#include "dlog/levels_names.h"
+#include "dave/enum_helper.h"
+#include "dave/levels_names.h"
 
-namespace dlog {
+namespace dave::log {
 
 EH_DECL_ENUM(Level_e, LOG_LEVELS, vverbose, fatal);
 EH_DECL_ENUM_STRINGIFIER(get_Level_e_str, Level_e);
@@ -31,5 +31,5 @@ class LevelMask_c {
 
 uint32_t LevelToMask(const Level_e &l);
 
-}  // namespace dlog
+}  // namespace dave:log 
 

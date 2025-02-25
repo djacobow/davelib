@@ -3,11 +3,11 @@
 #include <string>
 #include <vector>
 
-#include "dlog/message.h"
-#include "dlog/styles.h"
-#include "dlog/levels.h"
+#include "dave/message.h"
+#include "dave/styles.h"
+#include "dave/levels.h"
 
-namespace dlog {
+namespace dave::log {
 
 class Subscriber_Base_c {
   public:

@@ -1,8 +1,8 @@
-#include "dlog/c_helpers.h"
+#include "dave/c_helpers.h"
 
 void foobs() {
-    L(info, "Hi from foobs!");
-    L(error, "Something went wrong in C-land");
-    L(notice, "Something requires notification from C-land");
-};
+    L_(info, "Hi from foobs!");
+    L_(error, "Something went wrong in C-land");
+    L_(notice, "Something requires notification from C-land");
+}
 

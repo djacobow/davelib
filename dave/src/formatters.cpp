@@ -1,13 +1,16 @@
-#include <iostream>
+#include "dave/formatters.h"
+
+#include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
-#include <nlohmann/json.hpp>
+#include <utility>
 
-#include "dlog/formatters.h"
+#include "dave/levels.h"
+#include "dave/message.h"
 
-namespace dlog {
+namespace dave::log {
 
-std::string ToJS(const Message_c &m) {
+auto ToJS(const Message_c &m) -> std::string {
     const nlohmann::json j = {
         {"time", m.tstamp.Iso8601()},
         {"level", get_Level_e_str(m.level)},
@@ -19,7 +22,7 @@ std::string ToJS(const Message_c &m) {
     return j.dump();
 };
 
-std::string ToPrettyDetails(const Message_c &m) {
+auto ToPrettyDetails(const Message_c &m) -> std::string {
     std::stringstream os;
     os << m.tstamp.Iso8601() << " | " << std::setw(8) << std::setfill(' ')
        << get_Level_e_str(m.level) << " | ";
@@ -31,11 +34,11 @@ std::string ToPrettyDetails(const Message_c &m) {
 };
 
 // print a thing or the thing's length in spaces, depending
-static std::string maybeSkip(bool skip, const std::string &s) {
+static auto maybeSkip(bool skip, const std::string &s) -> std::string {
     return skip ? std::string(s.size(), ' ') : s;
 }
 
-std::string ToTightDetails(const Message_c &m) {
+auto ToTightDetails(const Message_c &m) -> std::string {
     static Message_c last_m = { .tstamp = dave::time::DTime(0) };
     std::stringstream os;
     os << maybeSkip(last_m.tstamp.SameMillis(m.tstamp), m.tstamp.Iso8601()) << " | "
@@ -45,12 +48,12 @@ std::string ToTightDetails(const Message_c &m) {
        << maybeSkip(m.line     == last_m.line,     std::to_string(m.line)) << " "
        << maybeSkip(m.funcname == last_m.funcname, m.funcname + "()") << " | "
        << m.message;
-    last_m = std::move(m);
+    last_m = m;
     return os.str();
 };
 
-std::string ToPlain(const Message_c &m) {
+auto ToPlain(const Message_c &m) -> std::string {
     return m.message;
 };
 
-}
+}  // namespace dave::log

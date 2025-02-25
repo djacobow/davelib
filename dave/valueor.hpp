@@ -4,9 +4,9 @@
 #include <variant>
 #include <stdexcept>
 
-#include "derr/error.h"
+#include "dave/error.h"
 
-namespace derr {
+namespace dave::err {
 
 template<typename T>
 class ValueOr {

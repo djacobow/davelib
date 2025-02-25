@@ -6,11 +6,11 @@
 #include <map>
 #include <cstdarg>
 
-#include "dlog/subscriber.h"
-#include "dlog/levels.h"
-#include "dlog/styles.h"
+#include "dave/subscriber.h"
+#include "dave/levels.h"
+#include "dave/styles.h"
 
-namespace dlog {
+namespace dave::log {
 
 class stream_end_c {
   public:
@@ -38,7 +38,9 @@ class Logger_c {
         const std::string &filename,
         const size_t line,
         const std::string &funcname,
-        const std::string &fmt,
+        // Not this is purposefully not a ref to avoid UB associated
+        // with starting varargs from a reference:
+        const std::string fmt,
         ...
     );
     void Log(
@@ -66,5 +68,5 @@ class Logger_c {
     std::ostringstream ss_;
 };
 
-}  // namespace dlog
+}  // namespace dave::log
 

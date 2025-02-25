@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace dlog {
+namespace dave::log {
 
 enum class Color_e {
     black = 0,

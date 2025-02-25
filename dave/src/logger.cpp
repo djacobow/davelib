@@ -1,9 +1,14 @@
+#include "dave/logger.hpp"
+
+#include <cstdarg>
 #include <string>
 #include <vector>
-#include <cstdarg>
-#include "dlog/logger.hpp"
 
-namespace dlog {
+#include "dave/dtime.h"
+#include "dave/levels.h"
+#include "dave/message.h"
+
+namespace dave::log {
 
 void Logger_c::Log(
     const Level_e &level,
@@ -15,18 +20,25 @@ void Logger_c::Log(
 
     const dave::time::DTime tstamp;
 
-    va_list args_copy;
-    va_copy(args_copy, args);
-
-    const int size = vsnprintf(nullptr, 0, fmt.c_str(), args);
+    va_list copy_1;
+    va_copy(copy_1, args);
+    // TODO(user): clang-tidy complains:
+    //   logger.cpp:21:22: warning: Function 'vsnprintf' is called with an uninitialized
+    //   va_list argument [clang-analyzer-valist.Uninitialized]
+    // We need to figure out how to fix this, since the copy is supposed to be "started"
+    // automatically. The second call below, which writes that actual string does
+    // not complain, even though the copy is made in the same manner.
+    const int size = vsnprintf(nullptr, 0, fmt.c_str(), copy_1); // NOLINT
+    va_end(copy_1);
     if (size < 0) {
-        va_end(args_copy);
         return;
     }
 
     std::vector<char> buf(size + 1);
-    vsnprintf(buf.data(), buf.size(), fmt.c_str(), args_copy);
-    va_end(args_copy);
+    va_list copy_2;
+    va_copy(copy_2, args);
+    vsnprintf(buf.data(), buf.size(), fmt.c_str(), copy_2);
+    va_end(copy_2);
     const std::string message(buf.data());
 
     const Message_c m = {
@@ -46,7 +58,7 @@ void Logger_c::Log(
     const std::string &filename,
     const size_t line,
     const std::string &funcname,
-    const std::string &fmt,
+    const std::string fmt,
     ...
 ) {
 
@@ -69,7 +81,7 @@ void Logger_c::Done() {
     subscribers_.clear();
 }
 
-Logger_c &Logger_c::operator<<(const stream_end_c &x) {
+auto Logger_c::operator<<(const stream_end_c &x) -> Logger_c & {
     Log(x.level, x.filename, x.line, x.funcname, ss_.str());
     ss_.str("");
     return *this;
@@ -82,5 +94,5 @@ void Logger_c::AddSubscriber(
     subscribers_[name] = std::move(s);
 }
 
-}  // namespace dlog
+}  // namespace dave::log
 

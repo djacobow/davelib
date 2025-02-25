@@ -1,9 +1,12 @@
-#include "dlog/styles.h"
-#include "dlog/formatters.h"
+#include "dave/styles.h"
 
-namespace dlog {
+#include "dave/formatters.h"
+#include "dave/levels.h"
+#include "dave/message.h"
 
-std::string Style(Style_e s, const Message_c &m) {
+namespace dave::log {
+
+auto Style(Style_e s, const Message_c &m) -> std::string {
     std::string os;
     switch (s) {
         case Style_e::pretty:
@@ -31,4 +34,4 @@ std::string Style(Style_e s, const Message_c &m) {
     return os;
 };
 
-}
+}  // namespace dave::log

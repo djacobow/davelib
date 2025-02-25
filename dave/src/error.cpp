@@ -1,37 +1,38 @@
 #include <format>
+#include <string>
 
-#include "derr/error.h"
+#include "dave/error.h"
+#include "dave/enum_helper.h"
 
-namespace derr {
+namespace dave::err {
 
 EH_IMPL_ENUM_STRINGIFIER(etype_e_to_string, etype_e, DAVE_ERRORS);
 
-Error::Error(etype_e t, const std::string &msg, const std::string &file, const std::string &func, size_t line) :
+Error::Error(etype_e t, std::string msg, std::string file, std::string func, size_t line) :
     etype_(t),
-    message_(msg),
-    file_(file),
-    func_(func),
+    message_(std::move(msg)),
+    file_(std::move(file)),
+    func_(std::move(func)),
     line_(line) {
 }
 
-bool Error::ok() const {
+auto Error::ok() const -> bool {
     return etype_ == etype_e::ok;
 }
 
-etype_e Error::error() const {
+auto Error::error() const -> etype_e {
     return etype_;
 }
 
-const std::string Error::ename() const {
+auto Error::ename() const -> std::string {
     return etype_e_to_string(etype_);
 }
 
-const std::string Error::why() const {
+auto Error::why() const -> std::string {
     if (file_.empty()) {
         return std::format("[etype::{}]: {}", etype_e_to_string(etype_), message_);
     }
     return std::format("[etype::{} @ {}/{}():{}]: {}", etype_e_to_string(etype_), file_, func_, line_, message_);
 }
 
-}
-
+}  // namespace dave::err

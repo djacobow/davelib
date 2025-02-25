@@ -1,5 +1,6 @@
-#include "dlog/logger.hpp"
-#include "dlog/levels.h"
+#include "dave/levels_names.h"
+#include "dave/logger.hpp"
+#include "dave/levels.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,7 +10,7 @@ extern "C" {
     void DaveLog_##l(const char *filename, size_t line, const char *funcname, const char *fmt, ...) { \
         va_list args; \
         va_start(args, fmt); \
-        dlog::Logger_c::Get().Log(dlog::Level_e::l, filename, line, funcname, fmt, args); \
+        dave::log::Logger_c::Get().Log(dave::log::Level_e::l, filename, line, funcname, fmt, args); \
         va_end(args); \
     };
 

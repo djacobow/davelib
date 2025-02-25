@@ -4,10 +4,10 @@
 #include <vector>
 #include <cstdio>
 
-#include "dlog/levels.h"
-#include "dlog/styles.h"
+#include "dave/levels.h"
+#include "dave/styles.h"
 
-namespace dlog {
+namespace dave::log {
 
 struct InitInfo_t {
     std::string name;

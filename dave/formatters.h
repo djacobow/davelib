@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
-#include "dlog/message.h"
-#include "dlog/styles.h"
+#include "dave/message.h"
+#include "dave/styles.h"
 
-namespace dlog {
+namespace dave::log {
 
 std::string ToJS(const Message_c &m);
 std::string ToPrettyDetails(const Message_c &m);

@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "dlog/enum_helper.h"
+#include "dave/enum_helper.h"
 
-namespace derr {
+namespace dave::err {
 
 #define DAVE_ERRORS(X)  \
     X(ok) \
@@ -33,14 +33,14 @@ EH_DECL_ENUM_STRINGIFIER(errors_s_to_string, etype_e);
 class Error {
     public:
         Error(etype_e t,
-            const std::string &msg = "",
-            const std::string &file = "",
-            const std::string &func = "",
+            std::string msg = "",
+            std::string file = "",
+            std::string func = "",
             const size_t line = 0
         );
         bool ok() const;
-        const std::string why() const;
-        const std::string ename() const;
+        std::string why() const;
+        std::string ename() const;
         etype_e error() const;
 
     private:
@@ -55,5 +55,5 @@ class Error {
 
 
 // short macro that will create an error from scratch, with minimal fuss and with the location info
-#define E_(type, msg) derr::Error(derr::etype_e::type, msg, __FILE__, __func__, __LINE__)
+#define E_(type, msg) dave::err::Error(dave::err::etype_e::type, msg, __FILE__, __func__, __LINE__)
 

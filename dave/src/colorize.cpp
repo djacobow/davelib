@@ -1,11 +1,12 @@
 #include <unistd.h>
 
-#include "dlog/colorize.h"
-#include "dlog/colors.h"
+#include "dave/colorize.h"
+#include "dave/colors.h"
+#include "dave/levels.h"
 
-namespace dlog {
+namespace dave::log {
 
-std::string &Colorize(Level_e l, std::string &os) {
+auto Colorize(Level_e l, std::string &os) -> std::string & {
     ColorTuple_t ct;
     static const auto important   = LevelMask_c().AtOrAbove(Level_e::notice);
     static const auto unimportant = LevelMask_c().AtOrBelow(Level_e::debug);
@@ -37,5 +38,4 @@ std::string &Colorize(Level_e l, std::string &os) {
     return os;
 }
 
-}
-
+}  // namespace dave::log

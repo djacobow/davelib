@@ -1,13 +1,15 @@
-#include <vector>
 #include <numeric>
-#include "dlog/colors.h"
+#include <type_traits>
+#include <vector>
 
-namespace dlog {
+#include "dave/colors.h"
+
+namespace dave::log {
 
 const constexpr std::string code_start = {  0x1b, '[' };
 const constexpr std::string code_end   = { 'm' };
 
-constexpr std::string colorModeOn(const ColorTuple_t &ct) { 
+constexpr auto colorModeOn(const ColorTuple_t &ct) -> std::string { 
     std::vector<std::string> codes;
 
     if (ct.m_ != ColorMode_e::nochange) {
@@ -37,7 +39,7 @@ constexpr std::string colorModeOn(const ColorTuple_t &ct) {
                codes.begin(),
                codes.end(),
                std::string(),
-               [](std::string ss, std::string s) {
+               [](const std::string& ss, const std::string& s) {
                    return ss.empty() ? s : ss + ';' + s; 
                }
             ) +
@@ -47,15 +49,14 @@ constexpr std::string colorModeOn(const ColorTuple_t &ct) {
     return "";
 }
 
-constexpr std::string colorReset() {
+constexpr auto colorReset() -> std::string {
     return code_start + '0' + code_end;
 }
 
-[[maybe_unused]] std::string &colorModeWrap(const ColorTuple_t &ct, std::string &s) {
+[[maybe_unused]] auto colorModeWrap(const ColorTuple_t &ct, std::string &s) -> std::string & {
     s.insert(0, colorModeOn(ct));
     s.append(colorReset());
     return s;
 };
 
-}
-
+}  // namespace dave::log

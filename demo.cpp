@@ -1,13 +1,18 @@
 #include <cstdio>
-#include <cstdlib>
+#include <format>
 #include <random>
 #include <ranges>
 
-#include "dlog/log.h"
-#include "derr/valueor.hpp"
+#include "dave/error.h"
+#include "dave/init.h"
+#include "dave/levels.h"
+#include "dave/log.h"
+#include "dave/styles.h"
+#include "dave/valueor.hpp"
 #include "some_c.h"
 
-bool randomBoolean() {
+
+auto randomBoolean() -> bool {
   static std::default_random_engine generator(std::random_device{}());
   static std::bernoulli_distribution distribution(0.5);
   return distribution(generator);
@@ -18,14 +23,14 @@ struct bloop_t {
     std::string bbb;
 };
 
-derr::ValueOr<bloop_t> bloopify(int i) {
+auto bloopify(int i) -> dave::err::ValueOr<bloop_t> {
     if (randomBoolean()) {
         return bloop_t{.aaa = i, .bbb = "everything is fine!" };
     }
     return E_(data_loss, "data was lost");
 }
 
-derr::ValueOr<bool> makeTrue() {
+auto makeTrue() -> dave::err::ValueOr<bool> {
     if (randomBoolean()) {
         return true;
     }
@@ -36,51 +41,51 @@ void demo_valueor() {
     for (auto i : std::ranges::views::iota(0,10)) {
         auto rv0 = bloopify(i);
         if (rv0.ok()) {
-            L(info, std::format("bloop_t: {}, {}", rv0.v().aaa, rv0.v().bbb));
+            L_(info, std::format("bloop_t: {}, {}", rv0.v().aaa, rv0.v().bbb));
         } else {
-            L(error, rv0.why());
+            L_(error, rv0.why());
         }
         auto rv1 = makeTrue();
         if (rv1.ok()) {
-            L(info, std::format("value was: {}", rv1.v()));
+            L_(info, std::format("value was: {}", rv1.v()));
         } else {
-            L(error, rv1.why());
+            L_(error, rv1.why());
         }
     }
 }
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
+auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
 
-    const dlog::InitList_t initlist = {
-        dlog::InitInfo_t{
+    const dave::log::InitList_t initlist = {
+        dave::log::InitInfo_t{
             "console",
             stdout,
-            dlog::LevelMask_c().AtOrAbove(dlog::Level_e::debug),
-            dlog::Style_e::tight
+            dave::log::LevelMask_c().AtOrAbove(dave::log::Level_e::debug),
+            dave::log::Style_e::tight
         },
-        dlog::InitInfo_t{
+        dave::log::InitInfo_t{
             "logfile",
-            fopen("demo_output.json", "a"),
-            dlog::LevelMask_c().All(),
-            dlog::Style_e::json
+            fopen("demo_output.json", "ae"),
+            dave::log::LevelMask_c().All(),
+            dave::log::Style_e::json
         },
     };
 
-    dlog::Init(initlist);
+    dave::log::Init(initlist);
 
-    L(info, "This is the logger talking!");
-    L(info, "Nothing special here, kinda boring.");
-    L(debug, "but maybe not as boring as this?");
-    L(warning, "The number is %d, that is %s", 42, "great!");
-    L(error, "%d is a bad return value", -1);
+    L_(info, "This is the logger talking!");
+    L_(info, "Nothing special here, kinda boring.");
+    L_(debug, "but maybe not as boring as this?");
+    L_(warning, "The number is %d, that is %s", 42, "great!");
+    L_(error, "%d is a bad return value", -1);
     foobs(); 
     demo_valueor();
 
-    L(vverbose, "yadda yadda yadda");
-    L(debug, "this is a debug message");
+    L_(vverbose, "yadda yadda yadda");
+    L_(debug, "this is a debug message");
     LOGGER << "Well this is another way to do it" << L_ENDL(debug);
     LOGGER << "Die! Die! Die!" << L_ENDL(fatal);
-    L(info, "and now we're leaving, bye!");
+    L_(info, "and now we're leaving, bye!");
 
     return 0;
 }
