@@ -10,7 +10,7 @@ void Logger_c::Log(
     const std::string &filename,
     const size_t line,
     const std::string &funcname,
-    const char *fmt,
+    const std::string &fmt,
     va_list args) {
 
     const dave::time::DTime tstamp;
@@ -18,14 +18,14 @@ void Logger_c::Log(
     va_list args_copy;
     va_copy(args_copy, args);
 
-    const int size = vsnprintf(nullptr, 0, fmt, args);
+    const int size = vsnprintf(nullptr, 0, fmt.c_str(), args);
     if (size < 0) {
         va_end(args_copy);
         return;
     }
 
     std::vector<char> buf(size + 1);
-    vsnprintf(buf.data(), buf.size(), fmt, args_copy);
+    vsnprintf(buf.data(), buf.size(), fmt.c_str(), args_copy);
     va_end(args_copy);
     const std::string message(buf.data());
 
@@ -46,7 +46,7 @@ void Logger_c::Log(
     const std::string &filename,
     const size_t line,
     const std::string &funcname,
-    const char *fmt,
+    const std::string &fmt,
     ...
 ) {
 

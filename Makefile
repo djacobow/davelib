@@ -4,7 +4,7 @@ CFLAGS=-Wall -g -Og -I.
 CPPFLAGS=-std=c++20 ${CFLAGS}
 DEPDIR=./deps
 
-SRCS=$(wildcard *.cpp) $(wildcard dlog/src/*.cpp)
+SRCS=$(wildcard *.cpp) $(wildcard d*/src/*.cpp)
 OBJS=$(SRCS:.cpp=.o)
 
 C_SRCS=$(wildcard *.c)
@@ -35,7 +35,7 @@ $(DEPDIR)/%.d: %.cpp $(DEPDIR)
 	$(CPP) $(CPPFLAGS) -M $< > $@
 
 $(DEPDIR):
-	@[ ! -d $(DEPDIR)/dlog/src ] && mkdir -p $(DEPDIR)/dlog/src
+	@[ ! -d $(DEPDIR)/dlog/src ] && mkdir -p $(DEPDIR)/dlog/src $(DEPDIR)/derr/src
 
 %.o:%.cpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@

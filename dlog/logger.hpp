@@ -38,7 +38,7 @@ class Logger_c {
         const std::string &filename,
         const size_t line,
         const std::string &funcname,
-        const char *fmt,
+        const std::string &fmt,
         ...
     );
     void Log(
@@ -46,7 +46,7 @@ class Logger_c {
         const std::string &filename,
         const size_t line,
         const std::string &funcname,
-        const char *fmt,
+        const std::string &fmt,
         va_list args
     );
 
