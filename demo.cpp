@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <random>
+#include <ranges>
 
 #include "dlog/log.h"
 #include "derr/valueor.hpp"
@@ -17,9 +18,9 @@ struct bloop_t {
     std::string bbb;
 };
 
-derr::ValueOr<bloop_t> bloopify() {
+derr::ValueOr<bloop_t> bloopify(int i) {
     if (randomBoolean()) {
-        return bloop_t{.aaa = 42, .bbb = "everything is fine!" };
+        return bloop_t{.aaa = i, .bbb = "everything is fine!" };
     }
     return E_(data_loss, "data was lost");
 }
@@ -29,6 +30,23 @@ derr::ValueOr<bool> makeTrue() {
         return true;
     }
     return E_(aborted, "we don't like false");
+}
+
+void demo_valueor() {
+    for (auto i : std::ranges::views::iota(0,10)) {
+        auto rv0 = bloopify(i);
+        if (rv0.ok()) {
+            L(info, std::format("bloop_t: {}, {}", rv0.v().aaa, rv0.v().bbb));
+        } else {
+            L(error, rv0.why());
+        }
+        auto rv1 = makeTrue();
+        if (rv1.ok()) {
+            L(info, std::format("value was: {}", rv1.v()));
+        } else {
+            L(error, rv1.why());
+        }
+    }
 }
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
@@ -56,22 +74,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
     L(warning, "The number is %d, that is %s", 42, "great!");
     L(error, "%d is a bad return value", -1);
     foobs(); 
-    for (uint32_t i=0; i<10; i++) {
-        auto rv = bloopify();
-        if (rv.ok()) {
-            L(info, std::format("bloop_t: {}, {}", rv.value().aaa, rv.value().bbb));
-        } else {
-            L(error, rv.why());
-        }
-    }
-    for (uint32_t i=0; i<10; i++) {
-        auto rv = makeTrue();
-        if (rv.ok()) {
-            L(info, std::format("value was: {}", rv.value() ? "true" : "false"));
-        } else {
-            L(error, rv.why());
-        }
-    }
+    demo_valueor();
+
     L(vverbose, "yadda yadda yadda");
     L(debug, "this is a debug message");
     LOGGER << "Well this is another way to do it" << L_ENDL(debug);

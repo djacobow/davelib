@@ -70,7 +70,7 @@ void Logger_c::Done() {
 }
 
 Logger_c &Logger_c::operator<<(const stream_end_c &x) {
-    Log(x.level, x.filename, x.line, x.funcname, ss_.str().c_str());
+    Log(x.level, x.filename, x.line, x.funcname, ss_.str());
     ss_.str("");
     return *this;
 }

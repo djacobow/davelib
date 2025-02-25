@@ -16,6 +16,9 @@ class ValueOr {
         bool ok() const {
             return std::holds_alternative<T>(v_);
         }
+        T &v() {
+            return value();
+        }
         T &value() {
             if (!std::holds_alternative<T>(v_)) {
                 throw std::invalid_argument("no value");

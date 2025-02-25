@@ -28,9 +28,9 @@ const std::string Error::ename() const {
 
 const std::string Error::why() const {
     if (file_.empty()) {
-        return std::format("(etype::{}: {}", etype_e_to_string(etype_), message_);
+        return std::format("[etype::{}]: {}", etype_e_to_string(etype_), message_);
     }
-    return std::format("(etype::{} @ {}/{}():{}): {}", etype_e_to_string(etype_), file_, func_, line_, message_);
+    return std::format("[etype::{} @ {}/{}():{}]: {}", etype_e_to_string(etype_), file_, func_, line_, message_);
 }
 
 }
