@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "dave/message.h"
-#include "dave/styles.h"
 
 namespace dave::log {
 

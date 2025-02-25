@@ -4,9 +4,11 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "dave/levels.h"
 #include "dave/message.h"
+#include "dave/strutil.h"
 
 namespace dave::log {
 
@@ -31,27 +33,30 @@ auto ToPrettyDetails(const Message_c &m) -> std::string {
        << get_Level_e_str(m.level) << " | ";
     std::stringstream fs;
     fs << m.filename << ":" << m.line << " " << m.funcname << "()";
-    os << std::setw(FUNC_NAME_WIDTH) << fs.str() << "\n";
+    os << std::setw(FUNC_NAME_WIDTH) << fs.str() << dave::str::newline;
     os << "    " << std::setw(0) << m.message;
     return os.str();
 };
 
-// print a thing or the thing's length in spaces, depending
-static auto maybeSkip(bool skip, const std::string &s) -> std::string {
-    return skip ? std::string(s.size(), ' ') : s;
-}
 
 auto ToTightDetails(const Message_c &m) -> std::string {
     static Message_c last_m = { .tstamp = dave::time::DTime(0) };
     std::stringstream os;
-    os << maybeSkip(last_m.tstamp.SameMillis(m.tstamp), m.tstamp.Iso8601()) << " | "
-       << std::setw(LEVEL_NAME_WIDTH)
-       << maybeSkip(m.level    == last_m.level,    get_Level_e_str(m.level)) << " | "
-       << maybeSkip(m.filename == last_m.filename ,m.filename) << ":"
-       << maybeSkip(m.line     == last_m.line,     std::to_string(m.line)) << " "
-       << maybeSkip(m.funcname == last_m.funcname, m.funcname + "()") << " | "
-       << m.message;
-    last_m = m;
+    const auto lines = dave::str::split(m.message, dave::str::newline);
+    const uint32_t num_lines = lines.size();
+    for (uint32_t i=0; i<num_lines; i++) {
+        os << dave::str::stringOrSpace(last_m.tstamp.SameMillis(m.tstamp), m.tstamp.Iso8601()) << " | "
+           << std::setw(LEVEL_NAME_WIDTH)
+           << dave::str::stringOrSpace(m.level    == last_m.level,    get_Level_e_str(m.level)) << " | "
+           << dave::str::stringOrSpace(m.filename == last_m.filename ,m.filename) << ":"
+           << dave::str::stringOrSpace(m.line     == last_m.line,     std::to_string(m.line)) << " "
+           << dave::str::stringOrSpace(m.funcname == last_m.funcname, m.funcname + "()") << " | "
+           << lines[i];
+        if (i < (num_lines-1)) {
+           os << dave::str::newline;
+        }
+        last_m = m;
+    }
     return os.str();
 };
 
