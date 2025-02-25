@@ -1,4 +1,4 @@
-#include <string>
+#include <memory>
 #include "dave/init.h"
 #include "dave/logger.hpp"
 #include "dave/subscriber.h"

@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-void foobs();
+void foobs(void);
 
 #ifdef __cplusplus
 } // extern "C"

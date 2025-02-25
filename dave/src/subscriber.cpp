@@ -1,7 +1,7 @@
 #include "dave/subscriber.h"
 
+#include <cstdio>
 #include <cstdlib>
-#include <iostream>
 #include <string>
 #include <unistd.h>
 

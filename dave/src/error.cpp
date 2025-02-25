@@ -1,5 +1,7 @@
+#include <cstddef>
 #include <format>
 #include <string>
+#include <utility>
 
 #include "dave/error.h"
 #include "dave/enum_helper.h"

@@ -1,3 +1,5 @@
+#include <cstddef>
+#include <cstdarg>
 #include "dave/levels_names.h"
 #include "dave/logger.hpp"
 #include "dave/levels.h"

@@ -1,7 +1,10 @@
 #include "dave/logger.hpp"
 
 #include <cstdarg>
+#include <cstddef>
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "dave/dtime.h"

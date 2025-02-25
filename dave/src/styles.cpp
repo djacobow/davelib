@@ -1,4 +1,5 @@
 #include "dave/styles.h"
+#include <string>
 
 #include "dave/formatters.h"
 #include "dave/levels.h"

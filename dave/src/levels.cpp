@@ -1,5 +1,7 @@
 #include "dave/levels.h"
 
+#include <type_traits>
+#include <cstdint>
 #include <vector>
 
 #include "dave/enum_helper.h"
