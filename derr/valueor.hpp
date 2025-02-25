@@ -24,7 +24,7 @@ class ValueOr {
         }
         Error error() const {
             if (!std::holds_alternative<Error>(v_)) {
-                return Error(errors_e::ok, "no error");
+                return Error(etype_e::ok, "no error");
             }
             return std::get<Error>(v_);
         }

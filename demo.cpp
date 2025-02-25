@@ -21,7 +21,14 @@ derr::ValueOr<bloop_t> bloopify() {
     if (randomBoolean()) {
         return bloop_t{.aaa = 42, .bbb = "everything is fine!" };
     }
-    return derr::Error(derr::errors_e::loss, "data was lost");
+    return E_(data_loss, "data was lost");
+}
+
+derr::ValueOr<bool> makeTrue() {
+    if (randomBoolean()) {
+        return true;
+    }
+    return E_(aborted, "we don't like false");
 }
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
@@ -53,6 +60,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
         auto rv = bloopify();
         if (rv.ok()) {
             L(info, std::format("bloop_t: {}, {}", rv.value().aaa, rv.value().bbb));
+        } else {
+            L(error, rv.why());
+        }
+    }
+    for (uint32_t i=0; i<10; i++) {
+        auto rv = makeTrue();
+        if (rv.ok()) {
+            L(info, std::format("value was: {}", rv.value() ? "true" : "false"));
         } else {
             L(error, rv.why());
         }
