@@ -10,6 +10,9 @@
 
 namespace dave::log {
 
+const uint32_t LEVEL_NAME_WIDTH = 8;
+const uint32_t FUNC_NAME_WIDTH  = 35;
+
 auto ToJS(const Message_c &m) -> std::string {
     const nlohmann::json j = {
         {"time", m.tstamp.Iso8601()},
@@ -24,11 +27,11 @@ auto ToJS(const Message_c &m) -> std::string {
 
 auto ToPrettyDetails(const Message_c &m) -> std::string {
     std::stringstream os;
-    os << m.tstamp.Iso8601() << " | " << std::setw(8) << std::setfill(' ')
+    os << m.tstamp.Iso8601() << " | " << std::setw(LEVEL_NAME_WIDTH) << std::setfill(' ')
        << get_Level_e_str(m.level) << " | ";
     std::stringstream fs;
     fs << m.filename << ":" << m.line << " " << m.funcname << "()";
-    os << std::setw(35) << fs.str() << "\n";
+    os << std::setw(FUNC_NAME_WIDTH) << fs.str() << "\n";
     os << "    " << std::setw(0) << m.message;
     return os.str();
 };
@@ -42,7 +45,7 @@ auto ToTightDetails(const Message_c &m) -> std::string {
     static Message_c last_m = { .tstamp = dave::time::DTime(0) };
     std::stringstream os;
     os << maybeSkip(last_m.tstamp.SameMillis(m.tstamp), m.tstamp.Iso8601()) << " | "
-       << std::setw(8)
+       << std::setw(LEVEL_NAME_WIDTH)
        << maybeSkip(m.level    == last_m.level,    get_Level_e_str(m.level)) << " | "
        << maybeSkip(m.filename == last_m.filename ,m.filename) << ":"
        << maybeSkip(m.line     == last_m.line,     std::to_string(m.line)) << " "

@@ -14,9 +14,11 @@
 #include "some_c.h"
 
 
+const double EVEN_PROB = 0.5;
+
 auto randomBoolean() -> bool {
   static std::default_random_engine generator(std::random_device{}());
-  static std::bernoulli_distribution distribution(0.5);
+  static std::bernoulli_distribution distribution(EVEN_PROB);
   return distribution(generator);
 }
 

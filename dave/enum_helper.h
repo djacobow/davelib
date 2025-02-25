@@ -46,7 +46,7 @@ Finally, you can instantiate the function to get the strings:
 
 #define EH_IMPL_ENUM_STRINGIFIER(NAME, TYPENAME, LIST) \
     EH_DECL_ENUM_STRINGIFIER(NAME, TYPENAME) { \
-        static const char *names[] = {LIST(EH_MAKE_STR)}; \
+        static const std::array names = {LIST(EH_MAKE_STR)}; \
         auto idx = static_cast<std::underlying_type_t<decltype(t)> >(t); \
         return std::string(names[idx]); \
     }
