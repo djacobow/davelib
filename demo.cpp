@@ -4,10 +4,7 @@
 #include <ranges>
 
 #include "dave/error.h"
-#include "dave/init.h"
-#include "dave/levels.h"
 #include "dave/log.h"
-#include "dave/styles.h"
 #include "dave/valueor.hpp"
 #include "some_c.h"
 
