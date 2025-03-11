@@ -6,6 +6,7 @@
 #include <string>
 
 #include "dave/error.h"
+#include "dave/hexprint.h"
 #include "dave/init.h"
 #include "dave/levels.h"
 #include "dave/log.h"
@@ -146,6 +147,9 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
     L_(warning, "The number is %d, that is %s", 42, "great!");
     L_(error, "%d is a bad return value", -1);
     L_(notice, dave::str::box("boop", std::vector<std::string>{"thing"}));
+    L_(warning, "A string but in hex: %s", dave::hex::bin2hex("A string but in hex").c_str());
+    L_(error, "A string but in hex, printed \"canonically\": %s", dave::hex::bin2hex_canonical("A string but in hex").c_str());
+
 
     foobs(); 
     demo_valueor();
