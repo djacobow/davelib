@@ -73,6 +73,7 @@ void Logger_c::Log(
 
 void Logger_c::Log(const Message_c &m) {
     for (auto &it : subscribers_) {
+        const std::lock_guard<std::mutex> lock(mtx_);
         it.second->Log(m);
     }
 }

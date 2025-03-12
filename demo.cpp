@@ -1,6 +1,8 @@
+#include <algorithm>
 #include <cstdint>
 #include <cstdio>
 #include <format>
+#include <functional>
 #include <random>
 #include <ranges>
 #include <string>
@@ -12,6 +14,7 @@
 #include "dave/log.h"
 #include "dave/strutil.h"
 #include "dave/styles.h"
+#include "dave/tpool.h"
 #include "dave/valueor.hpp"
 #include "some_c.h"
 
@@ -121,6 +124,43 @@ void demo_boxes() {
     );
 }
 
+class SillyExample_c {
+    public:
+        SillyExample_c() = default;
+        void Silly(uint32_t i) {
+            const std::lock_guard<std::mutex> lock(mtx_);
+            order_.push_back(i);
+        }
+
+        std::string ShowOrder() {
+            std::vector<std::string> order_s;
+            std::transform(order_.begin(), order_.end(), std::back_inserter(order_s), [](auto v) { return std::to_string(v); });
+            return dave::str::join( order_s, ",");
+        };
+
+    private:
+        std::mutex mtx_;
+        std::vector<uint32_t> order_;
+};
+
+SillyExample_c se;
+
+void demo_tpool() {
+    L_(info, "tpool demo starting");
+    const uint32_t NUM_THREADS = 5;
+    const uint32_t NUM_ITERS = 50;
+    dave::async::ThreadPool_c p(NUM_THREADS);
+
+    p.Start();
+    for (uint32_t i=0;i<NUM_ITERS;i++) {
+        p.Add([i]() { se.Silly(i); });
+    }
+    p.Stop(true);
+    L_(info, "tpool demo complete");
+    L_(info, "Completion order was: %s", se.ShowOrder().c_str());
+}
+
+
 auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
 
     const dave::log::InitList_t initlist = {
@@ -154,11 +194,13 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
     foobs(); 
     demo_valueor();
     demo_boxes();
+    demo_tpool();
     L_(vverbose, "yadda yadda yadda");
     L_(debug, "this is a debug message");
     LOGGER << "Well this is another way to do it" << L_ENDL(debug);
     LOGGER << "Die! Die! Die!" << L_ENDL(fatal);
     L_(info, "and now we're leaving, bye!");
+
 
     return 0;
 }

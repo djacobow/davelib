@@ -5,6 +5,7 @@
 #include <iostream>
 #include <map>
 #include <cstdarg>
+#include <mutex>
 
 #include "dave/subscriber.h"
 #include "dave/levels.h"
@@ -66,6 +67,7 @@ class Logger_c {
     Logger_c() = default;
     std::map<std::string, std::unique_ptr<Subscriber_Base_c> > subscribers_;
     std::ostringstream ss_;
+    std::mutex mtx_;
 };
 
 }  // namespace dave::log
