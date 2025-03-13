@@ -1,4 +1,4 @@
-#include "dave/c_helpers.h"
+#include "dave/inc/log/c_helpers.h"
 
 void foobs(void) {
     L_(info, "Hi from foobs!");

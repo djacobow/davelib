@@ -11,7 +11,7 @@ CONFIG = {
         'rr':  ( 'repo root',   []),
     },
     'code_search_paths': {
-        'davelog': {
+        'davelib': {
             'root': {
                 'default': True,
                 'include': ['.' ],

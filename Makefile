@@ -8,7 +8,7 @@ CFLAGS=-Wall -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments -g -Og -I
 CPPFLAGS=-std=c++20 ${CFLAGS}
 DEPDIR=./deps
 
-SRCS=$(wildcard *.cpp) $(wildcard dave/src/*.cpp)
+SRCS=$(wildcard *.cpp) $(wildcard dave/src/*/*.cpp)
 OBJS=$(SRCS:.cpp=.o)
 
 C_SRCS=$(wildcard *.c)
@@ -18,10 +18,11 @@ all: run
 
 DEPS  = $(patsubst %.o, $(DEPDIR)/%.d, $(OBJS))
 DEPS += $(patsubst %.o, $(DEPDIR)/%.d, $(C_OBJS))
+
 -include $(DEPS)
 
 .PHONY: run
-run: demo
+run: demo $(DEPS)
 	./demo
 
 .PHONY: tidy
@@ -44,7 +45,11 @@ $(DEPDIR)/%.d: %.cpp $(DEPDIR)
 	$(CPP) $(CPPFLAGS) -M $< > $@
 
 $(DEPDIR):
-	@[ ! -d $(DEPDIR)/dave/src ] && mkdir -p $(DEPDIR)/dave/src
+	mkdir -p $(DEPDIR)/dave/src/async
+	mkdir -p $(DEPDIR)/dave/src/err
+	mkdir -p $(DEPDIR)/dave/src/event
+	mkdir -p $(DEPDIR)/dave/src/log
+	mkdir -p $(DEPDIR)/dave/src/util
 
 %.o:%.cpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@

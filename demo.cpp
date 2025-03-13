@@ -7,16 +7,17 @@
 #include <ranges>
 #include <string>
 
-#include "dave/error.h"
-#include "dave/event.h"
-#include "dave/hexprint.h"
-#include "dave/init.h"
-#include "dave/levels.h"
-#include "dave/log.h"
-#include "dave/strutil.h"
-#include "dave/styles.h"
-#include "dave/tpool.h"
-#include "dave/valueor.hpp"
+#include "dave/inc/async/tpool.h"
+#include "dave/inc/err/error.h"
+#include "dave/inc/err/valueor.hpp"
+#include "dave/inc/event/event.h"
+#include "dave/inc/log/init.h"
+#include "dave/inc/log/levels.h"
+#include "dave/inc/log/log.h"
+#include "dave/inc/log/styles.h"
+#include "dave/inc/util/hexprint.h"
+#include "dave/inc/util/strutil.h"
+
 #include "some_c.h"
 
 const double EVEN_PROB = 0.5;
