@@ -8,6 +8,7 @@
 #include <string>
 
 #include "dave/error.h"
+#include "dave/event.h"
 #include "dave/hexprint.h"
 #include "dave/init.h"
 #include "dave/levels.h"
@@ -161,6 +162,26 @@ void demo_tpool() {
 }
 
 
+void sub_one([[maybe_unused]] const dave::event::EventID_t &id /*unused*/ , const std::string &evname) {
+    L_(info, "sub one got event: %s", evname.c_str());
+}
+void sub_two([[maybe_unused]] const dave::event::EventID_t &id /*unused*/ , const std::string &evname) {
+    L_(info, "sub two got event: %s", evname.c_str());
+}
+
+
+void demo_events() {
+    dave::event::EventSystem_c evsys({"beep", "boop", "froop", "frop"});
+    evsys.Subscribe([](const dave::event::EventID_t, const std::string &evname) {
+        L_(info, "lambda got event: %s", evname.c_str());
+    });
+    evsys.Subscribe(dave::event::Subscriber_t(sub_one));
+    evsys.Subscribe(dave::event::Subscriber_t(sub_two));
+    evsys.Send("boop");
+    evsys.Send("frop");
+};
+
+
 auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
 
     const dave::log::InitList_t initlist = {
@@ -195,6 +216,7 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
     demo_valueor();
     demo_boxes();
     demo_tpool();
+    demo_events();
     L_(vverbose, "yadda yadda yadda");
     L_(debug, "this is a debug message");
     LOGGER << "Well this is another way to do it" << L_ENDL(debug);
