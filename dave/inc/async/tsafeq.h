@@ -10,9 +10,9 @@
 namespace dave::async {
 
 template<class T>
-class TSafeQueue {
+class TSafeQueue_c {
     public:
-        TSafeQueue() = default;
+        TSafeQueue_c() = default;
         void Push(T e) {
             std::lock_guard<std::mutex> lock(mtx_);
             q_.push(e);

@@ -70,14 +70,14 @@ struct bloop_t {
     std::string bbb;
 };
 
-auto bloopify(int i) -> dave::err::ValueOr<bloop_t> {
+auto bloopify(int i) -> dave::err::ValueOr_c<bloop_t> {
     if (randomBoolean()) {
         return bloop_t{.aaa = i, .bbb = "everything is fine!" };
     }
     return E_(data_loss, "data was lost");
 }
 
-auto makeTrue() -> dave::err::ValueOr<bool> {
+auto makeTrue() -> dave::err::ValueOr_c<bool> {
     if (randomBoolean()) {
         return true;
     }

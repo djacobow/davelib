@@ -30,9 +30,9 @@ EH_DECL_ENUM(etype_e, DAVE_ERRORS, ok, unknown);
 
 EH_DECL_ENUM_STRINGIFIER(errors_s_to_string, etype_e);
 
-class Error {
+class Error_c {
     public:
-        Error(etype_e t,
+        Error_c(etype_e t,
             std::string msg = "",
             std::string file = "",
             std::string func = "",
@@ -55,5 +55,5 @@ class Error {
 
 
 // short macro that will create an error from scratch, with minimal fuss and with the location info
-#define E_(type, msg) dave::err::Error(dave::err::etype_e::type, msg, __FILE__, __func__, __LINE__)
+#define E_(type, msg) dave::err::Error_c(dave::err::etype_e::type, msg, __FILE__, __func__, __LINE__)
 

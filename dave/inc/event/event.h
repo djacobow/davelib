@@ -55,7 +55,7 @@ class EventSystem_c {
     private:
         const std::map<std::string, EventID_t> types_by_name_;
         const std::map<EventID_t, std::string> types_by_id_;
-        dave::async::TSafeQueue<EventID_t> send_queue_;
+        dave::async::TSafeQueue_c<EventID_t> send_queue_;
         std::future<uint32_t> send_thread_;
         std::vector<Subscriber_t> subscribers_;
         const bool own_thread_;

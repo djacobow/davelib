@@ -19,7 +19,7 @@ class ThreadPool_c {
         bool allow_add_;
         bool stopped_;
         std::vector<std::future<uint32_t>> threads_;
-        TSafeQueue<Fn_c> queue_;
+        TSafeQueue_c<Fn_c> queue_;
 
 };
 

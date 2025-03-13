@@ -9,10 +9,10 @@
 namespace dave::err {
 
 template<typename T>
-class ValueOr {
+class ValueOr_c {
     public:
-        ValueOr(T &&t) : v_(std::move(t)) {};
-        ValueOr(Error &&e) : v_(std::move(e)) {}
+        ValueOr_c(T &&t) : v_(std::move(t)) {};
+        ValueOr_c(Error_c &&e) : v_(std::move(e)) {}
         bool ok() const {
             return std::holds_alternative<T>(v_);
         }
@@ -25,21 +25,21 @@ class ValueOr {
             }
             return std::get<T>(v_);
         }
-        Error error() const {
-            if (!std::holds_alternative<Error>(v_)) {
-                return Error(etype_e::ok, "no error");
+        Error_c error() const {
+            if (!std::holds_alternative<Error_c>(v_)) {
+                return Error_c(etype_e::ok, "no error");
             }
-            return std::get<Error>(v_);
+            return std::get<Error_c>(v_);
         }
         std::string why() const {
-            if (!std::holds_alternative<Error>(v_)) {
+            if (!std::holds_alternative<Error_c>(v_)) {
                 return "it's fine!";
             }
-            return std::get<Error>(v_).why();
+            return std::get<Error_c>(v_).why();
         }
 
     private:
-        std::variant<T, Error> v_;
+        std::variant<T, Error_c> v_;
 };
 
 }
