@@ -46,10 +46,21 @@ EventSystem_c::~EventSystem_c() {
     Send("evs_shutdown");
 }
 
-EventSystem_c::EventSystem_c(const std::vector<std::string> namelist, const std::vector<Subscriber_t> &subs) :
+void EventSystem_c::DispatchOne(const EventID_t &ev) {
+    for (auto &subscriber : subscribers_) {
+        subscriber(ev, types_by_id_.find(ev)->second);
+    }
+}
+
+EventSystem_c::EventSystem_c(const std::vector<std::string> namelist, const std::vector<Subscriber_t> &subs, bool own_thread) :
     types_by_name_(EventSystem_c::StringsToMap(namelist)),
     types_by_id_(EventSystem_c::MapToMap(types_by_name_)),
-    subscribers_(subs) {
+    subscribers_(subs),
+    own_thread_(own_thread) {
+
+    if (!own_thread_) {
+        return;
+    }
 
     send_thread_ = std::async(
         std::launch::async,
@@ -59,10 +70,7 @@ EventSystem_c::EventSystem_c(const std::vector<std::string> namelist, const std:
             while (true) {
                 auto ev = send_queue_.PopBlock();
                 count++;
-
-                for (auto &subscriber : subscribers_) {
-                    subscriber(ev, types_by_id_.find(ev)->second);
-                }
+                DispatchOne(ev);
                 if (ev == shutdown_ev) {
                     break;
                 }
@@ -73,7 +81,11 @@ EventSystem_c::EventSystem_c(const std::vector<std::string> namelist, const std:
 }
         
 void EventSystem_c::Send(const EventID_t &ev) {
-    send_queue_.Push(ev);
+    if (own_thread_) {
+        send_queue_.Push(ev);
+    } else {
+        DispatchOne(ev);
+    }
 }
 
 std::optional<EventID_t> EventSystem_c::EventByName(const std::string &name) {

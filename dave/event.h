@@ -10,8 +10,11 @@
 // Provides a simple event subsystem.
 // * The event system is created with a named list of possible events.
 // * A list of subscribers can also be added.
-// * Events "added" are pushed into a queue
-// * A separate thread "drains" events and round-robins them to all the subscribers
+// * can be run in its own thread or not
+// * If threaded:
+//   * Events "added" are pushed into a queue
+//   * A separate thread "drains" events and round-robins them to all the subscribers
+// * otherwise, events are dispatched immediately in the caller's thread
 
 namespace dave::event {
 
@@ -22,6 +25,7 @@ class EventID_t {
         auto operator==(const EventID_t &other) const;
         auto Less(const EventID_t &other) const;
         std::string Show() const;
+        
     private:
         uint32_t id_;
 };
@@ -33,7 +37,10 @@ using Subscriber_t = std::function<void(const EventID_t &, const std::string &)>
 class EventSystem_c {
     public:
         ~EventSystem_c();
-        EventSystem_c(const std::vector<std::string> namelist, const std::vector<Subscriber_t> &subs = {});
+        EventSystem_c(const std::vector<std::string> namelist, const std::vector<Subscriber_t> &subs = {}, bool own_thread = false);
+        EventSystem_c() = delete;
+        EventSystem_c(const EventSystem_c &other) = delete;
+
         void Send(const EventID_t &ev);
         bool Send(const std::string &name);
 
@@ -51,7 +58,9 @@ class EventSystem_c {
         dave::async::TSafeQueue<EventID_t> send_queue_;
         std::future<uint32_t> send_thread_;
         std::vector<Subscriber_t> subscribers_;
+        const bool own_thread_;
 
+        void DispatchOne(const EventID_t &ev);
         static std::map<std::string, EventID_t> StringsToMap(std::vector<std::string> nlist);
         static std::map<EventID_t, std::string> MapToMap(const std::map<std::string, EventID_t> &in);
 };
