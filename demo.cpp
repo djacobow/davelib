@@ -17,6 +17,7 @@
 #include "dave/inc/log/styles.h"
 #include "dave/inc/util/hexprint.h"
 #include "dave/inc/util/strutil.h"
+#include "dave/inc/util/winsize.h"
 
 #include "some_c.h"
 
@@ -202,6 +203,12 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
 
     dave::log::Init(initlist);
 
+    auto ws = dave::util::GetTerminalDimensions();
+    if (ws.ok()) {
+        L_(notice, "Terminal size: %u by %u", ws.v().width, ws.v().height);
+    } else {
+        L_(warning, "Could not get terminal size: %s", ws.why().c_str());
+    }
     L_(info, "This is the logger talking!");
     L_(info, "Nothing special here, kinda boring.");
     L_(debug, "but maybe not as boring as this?");
