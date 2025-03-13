@@ -35,14 +35,15 @@ auto join(const std::vector<std::string> &joinees, const std::string &joiner) ->
         return "";
     }
 
-    return std::accumulate(
-        std::begin(joinees),
-        std::end(joinees),
-        std::string(),
-        [&joiner](std::string ss, const std::string &s) {
-            return ss.empty() ? s : ss + joiner + s;
+    std::string outs;
+    for (auto it = joinees.begin(); it != joinees.end(); it++) {
+        const bool is_last = std::next(it) == joinees.end();
+        outs += *it;
+        if (!is_last) {
+            outs += joiner;
         }
-    );
+    }
+    return outs;
 }
 
 auto repeat(const std::string &s, uint32_t n) -> std::string {
@@ -56,7 +57,7 @@ auto repeat(const std::string &s, uint32_t n) -> std::string {
 auto split_white(const std::string &s) -> std::vector<std::string> {
     std::istringstream bs(s);
     std::vector<std::string> ret{
-        std::istream_iterator<std::string>(bs), 
+        std::istream_iterator<std::string>(bs),
         std::istream_iterator<std::string>()
     };
     return ret;
@@ -121,7 +122,7 @@ auto box(const std::string &title, const std::vector<std::string> &lines, uint32
         ss << draw::v << newline;
     }
     ss << draw::ll << repeat(draw::h, width) << draw::lr << newline;
-    return ss.str(); 
+    return ss.str();
 }
 
 
