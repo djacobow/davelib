@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
-#include <format>
 #include <functional>
 #include <random>
 #include <ranges>
@@ -89,15 +88,15 @@ void demo_valueor() {
     for (auto i : std::ranges::views::iota(0,10)) {
         auto rv0 = bloopify(i);
         if (rv0.ok()) {
-            L_(info, std::format("bloop_t: {}, {}", rv0.v().aaa, rv0.v().bbb));
+            LOGGER << "bloop_t: " << rv0.v().aaa << ", " << rv0.v().bbb << L_ENDL(info);
         } else {
-            L_(error, rv0.why());
+            LOGGER << rv0.why() << L_ENDL(error);
         }
         auto rv1 = makeTrue();
         if (rv1.ok()) {
-            L_(info, std::format("value was: {}", rv1.v()));
+            LOGGER << "value was: " << (rv1.v() ? "true" : "false") << L_ENDL(info);
         } else {
-            L_(error, rv1.why());
+            LOGGER << rv1.why() << L_ENDL(error);
         }
     }
 }

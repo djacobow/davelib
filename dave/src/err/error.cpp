@@ -1,6 +1,6 @@
 #include <cstddef>
-#include <format>
 #include <string>
+#include <sstream>
 #include <utility>
 
 #include "dave/inc/err/error.h"
@@ -31,10 +31,13 @@ auto Error_c::ename() const -> std::string {
 }
 
 auto Error_c::why() const -> std::string {
+    std::stringstream ss;
     if (file_.empty()) {
-        return std::format("[etype::{}]: {}", etype_e_to_string(etype_), message_);
+        ss << "[type: " << etype_e_to_string(etype_) << "]: " << message_;
+        return ss.str();
     }
-    return std::format("[etype::{} @ {}/{}():{}]: {}", etype_e_to_string(etype_), file_, func_, line_, message_);
+    ss << "[etype::" << etype_e_to_string(etype_) << " @ " << file_ << "/" << func_ << ":" << line_ << "]: " << message_;
+    return ss.str();
 }
 
 }  // namespace dave::err
