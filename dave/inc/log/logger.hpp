@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <cstdarg>
 #include <mutex>
 
