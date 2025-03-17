@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
-#include <functional>
 #include <random>
 #include <ranges>
 #include <string>
@@ -59,7 +58,7 @@ const std::string ee_cummings(
 );
 
 
-auto randomBoolean() -> bool {
+static auto randomBoolean() -> bool {
   static std::default_random_engine generator(std::random_device{}());
   static std::bernoulli_distribution distribution(EVEN_PROB);
   return distribution(generator);
@@ -70,38 +69,38 @@ struct bloop_t {
     std::string bbb;
 };
 
-auto bloopify(int i) -> dave::err::ValueOr_c<bloop_t> {
+static auto bloopify(int i) -> dave::err::ValueOr_c<bloop_t> {
     if (randomBoolean()) {
         return bloop_t{.aaa = i, .bbb = "everything is fine!" };
     }
     return E_(data_loss, "data was lost");
 }
 
-auto makeTrue() -> dave::err::ValueOr_c<bool> {
+static auto makeTrue() -> dave::err::ValueOr_c<bool> {
     if (randomBoolean()) {
         return true;
     }
     return E_(aborted, "we don't like false");
 }
 
-void demo_valueor() {
+static void demo_valueor() {
     for (auto i : std::ranges::views::iota(0,10)) {
         auto rv0 = bloopify(i);
-        if (rv0.ok()) {
+        if (rv0.Ok()) {
             LOGGER << "bloop_t: " << rv0.v().aaa << ", " << rv0.v().bbb << L_ENDL(info);
         } else {
-            LOGGER << rv0.why() << L_ENDL(error);
+            LOGGER << rv0.Why() << L_ENDL(error);
         }
         auto rv1 = makeTrue();
-        if (rv1.ok()) {
+        if (rv1.Ok()) {
             LOGGER << "value was: " << (rv1.v() ? "true" : "false") << L_ENDL(info);
         } else {
-            LOGGER << rv1.why() << L_ENDL(error);
+            LOGGER << rv1.Why() << L_ENDL(error);
         }
     }
 }
 
-void demo_boxes() {
+static void demo_boxes() {
     // call box with array of strings
     L_(warning,
         dave::str::box(
@@ -136,7 +135,7 @@ class SillyExample_c {
 
         std::string ShowOrder() {
             std::vector<std::string> order_s;
-            std::transform(order_.begin(), order_.end(), std::back_inserter(order_s), [](auto v) { return std::to_string(v); });
+            std::ranges::transform(order_, std::back_inserter(order_s), [](auto v) { return std::to_string(v); });
             return dave::str::join( order_s, ",");
         };
 
@@ -145,9 +144,9 @@ class SillyExample_c {
         std::vector<uint32_t> order_;
 };
 
-SillyExample_c se;
+static SillyExample_c se;
 
-void demo_tpool() {
+static void demo_tpool() {
     L_(info, "tpool demo starting");
     const uint32_t NUM_THREADS = 5;
     const uint32_t NUM_ITERS = 50;
@@ -163,15 +162,15 @@ void demo_tpool() {
 }
 
 
-void sub_one([[maybe_unused]] const dave::event::EventID_t &id /*unused*/ , const std::string &evname) {
+static void sub_one([[maybe_unused]] const dave::event::EventID_t &id /*unused*/ , const std::string &evname) {
     L_(info, "sub one got event: %s", evname.c_str());
 }
-void sub_two([[maybe_unused]] const dave::event::EventID_t &id /*unused*/ , const std::string &evname) {
+static void sub_two([[maybe_unused]] const dave::event::EventID_t &id /*unused*/ , const std::string &evname) {
     L_(info, "sub two got event: %s", evname.c_str());
 }
 
 
-void demo_events() {
+static void demo_events() {
     dave::event::EventSystem_c evsys({"beep", "boop", "froop", "frop"});
     evsys.Subscribe([](const dave::event::EventID_t, const std::string &evname) {
         L_(info, "lambda got event: %s", evname.c_str());
@@ -187,26 +186,26 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
 
     const dave::log::InitList_t initlist = {
         dave::log::InitInfo_t{
-            "console",
-            stdout,
-            dave::log::LevelMask_c().AtOrAbove(dave::log::Level_e::debug),
-            dave::log::Style_e::tight
+            .name = "console",
+            .file_ptr =  stdout,
+            .level_mask = dave::log::LevelMask_c().AtOrAbove(dave::log::Level_e::debug),
+            .style = dave::log::Style_e::tight
         },
         dave::log::InitInfo_t{
-            "logfile",
-            fopen("demo_output.json", "ae"),
-            dave::log::LevelMask_c().All(),
-            dave::log::Style_e::json
+            .name = "logfile",
+            .file_ptr = fopen("demo_output.json", "ae"),
+            .level_mask = dave::log::LevelMask_c().All(),
+            .style = dave::log::Style_e::json
         },
     };
 
     dave::log::Init(initlist);
 
     auto ws = dave::util::GetTerminalDimensions();
-    if (ws.ok()) {
+    if (ws.Ok()) {
         L_(notice, "Terminal size: %u by %u", ws.v().width, ws.v().height);
     } else {
-        L_(warning, "Could not get terminal size: %s", ws.why().c_str());
+        L_(warning, "Could not get terminal size: %s", ws.Why().c_str());
     }
     L_(info, "This is the logger talking!");
     L_(info, "Nothing special here, kinda boring.");
@@ -229,8 +228,6 @@ auto main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) -> int {
     LOGGER << "Well this is another way to do it" << L_ENDL(debug);
     LOGGER << "Die! Die! Die!" << L_ENDL(fatal);
     L_(info, "and now we're leaving, bye!");
-
-
     return 0;
 }
 

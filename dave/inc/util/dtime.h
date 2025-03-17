@@ -14,34 +14,35 @@ class DTime {
   public:
     DTime() : ts_(Clock::now()) {};
     explicit DTime(uint64_t millis) : ts_(std::chrono::milliseconds {millis}) {};
-    uint64_t Millis() const {
+    [[nodiscard]] uint64_t Millis() const {
         return std::chrono::duration_cast<std::chrono::milliseconds>(
                    ts_.time_since_epoch()
         ).count();
     };
-    uint64_t Micros() const {
+    [[nodiscard]] uint64_t Micros() const {
         return std::chrono::duration_cast<std::chrono::microseconds>(
                    ts_.time_since_epoch()
         ).count();
     };
-    uint64_t Seconds() const {
+    [[nodiscard]] uint64_t Seconds() const {
         return std::chrono::duration_cast<std::chrono::seconds>(ts_.time_since_epoch())
             .count();
     };
-    std::string Iso8601() const {
+    [[nodiscard]] std::string Iso8601() const {
+	const constexpr uint32_t MILLIS_PER_S = 1000;
         const std::time_t t = Clock::to_time_t(ts_);
         std::stringstream os;
         os << std::left;
         os << std::put_time(std::gmtime(&t), "%FT%T") << "." << std::right
-           << std::setfill('0') << std::setw(3) << (Millis() % 1000) << std::setw(0)
+           << std::setfill('0') << std::setw(3) << (Millis() % MILLIS_PER_S) << std::setw(0)
            << "Z";
         return os.str();
     };
-    auto Raw() const {
+    [[nodiscard]] auto Raw() const {
         return ts_;
     };
 
-    bool SameMillis(const DTime &other) const {
+    [[nodiscard]] bool SameMillis(const DTime &other) const {
         return Millis() == other.Millis();
     }
 

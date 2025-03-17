@@ -30,20 +30,14 @@ enum class ColorMode_e {
     nochange,
 };
 
-class ColorTuple_t {
-    public:
-    ColorTuple_t() :
-        fg_(Color_e::nochange),
-        bg_(Color_e::nochange),
-        m_(ColorMode_e::nochange) {}
-
-    Color_e fg_;
-    Color_e bg_;
-    ColorMode_e m_;
+struct ColorTuple_t {
+    Color_e fg_{Color_e::nochange};
+    Color_e bg_{Color_e::nochange};
+    ColorMode_e m_{ColorMode_e::nochange};
 };
 
 constexpr std::string colorModeOn(const ColorTuple_t &ct);
 constexpr std::string colorReset();
 [[maybe_unused]] std::string &colorModeWrap(const ColorTuple_t &ct, std::string &s);
 
-}
+} // namespace dave::log

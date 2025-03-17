@@ -1,11 +1,18 @@
 NPROCS = $(shell grep -c 'processor' /proc/cpuinfo)
+
 MAKEFLAGS += -j$(NPROCS)
+
 CPP=g++
 CC=gcc
-#CPP=clang++
-#CC=clang
-CFLAGS=-Wall -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments -g -Og -I.
 CPPFLAGS=-std=c++20 ${CFLAGS}
+
+#CPP=clang++-19
+#CC=clang-19
+#CPPFLAGS=-std=c++20 -stdlib=libc++ ${CFLAGS}
+
+CFLAGS=-Wall -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments -g -Og -I.
+CT=clang-tidy-19
+
 DEPDIR=./deps
 
 SRCS=$(wildcard *.cpp) $(wildcard dave/src/*/*.cpp)
@@ -27,7 +34,7 @@ run: demo $(DEPS)
 
 .PHONY: tidy
 tidy: $(SRCS)
-	clang-tidy $(SRCS) -- $(CPPFLAGS)
+	$(CT) $(SRCS) -- $(CPPFLAGS)
 
 
 .PHONY: clean

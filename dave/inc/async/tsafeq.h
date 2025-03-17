@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -64,4 +63,4 @@ class TSafeQueue_c {
         std::queue<T> q_;
 };
 
-}
+} // namespace dave::async

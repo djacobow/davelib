@@ -1,8 +1,5 @@
 #pragma once
 
-#include <string>
-#include <vector>
-
 #include "dave/inc/log/message.h"
 #include "dave/inc/log/styles.h"
 #include "dave/inc/log/levels.h"
@@ -26,8 +23,8 @@ class Subscriber_Base_c {
     virtual ~Subscriber_Base_c() = default;
 
   protected:
-    Style_e style_;
-    LevelMask_c level_mask_;
+    Style_e style_; // NOLINT protected visibility
+    LevelMask_c level_mask_; // NOLINT protected visibility
 
   private:
     virtual void LogInternal(const Message_c &m) = 0;
@@ -48,5 +45,5 @@ class Subscriber_FilePtr_c: public Subscriber_Base_c {
     void LogInternal(const Message_c &m) override;
 };
 
-}
+} // namespace dave::log
 

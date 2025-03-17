@@ -1,6 +1,5 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include <cstdint>
 
 #include "dave/inc/util/winsize.h"
 

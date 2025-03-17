@@ -5,7 +5,12 @@
     #error "A given translation unit should include the c_helpers.h file or the cpp_helpers.h file, but not both"
 #endif
 
-#include <stddef.h>
+#ifdef __cplusplus
+    #include <cstddef>
+#else
+    #include <stddef.h> // NOLINT
+#endif
+
 #include "dave/inc/log/levels_names.h"
 
 #ifdef __cplusplus

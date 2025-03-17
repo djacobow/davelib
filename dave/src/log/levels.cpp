@@ -6,7 +6,6 @@
 
 #include "dave/inc/util/enum_helper.h"
 #include "dave/inc/util/enum_range.h"
-#include "dave/inc/log/levels_names.h"
 
 namespace dave::log {
 

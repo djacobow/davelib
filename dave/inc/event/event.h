@@ -20,11 +20,11 @@ namespace dave::event {
 
 class EventID_t {
     public:
-        EventID_t(uint32_t id);
+        explicit EventID_t(uint32_t id);
         EventID_t();
         auto operator==(const EventID_t &other) const;
-        auto Less(const EventID_t &other) const;
-        std::string Show() const;
+        [[nodiscard]] auto Less(const EventID_t &other) const;
+        [[nodiscard]] std::string Show() const;
         
     private:
         uint32_t id_;
@@ -37,7 +37,7 @@ using Subscriber_t = std::function<void(const EventID_t &, const std::string &)>
 class EventSystem_c {
     public:
         ~EventSystem_c();
-        EventSystem_c(const std::vector<std::string> namelist, const std::vector<Subscriber_t> &subs = {}, bool own_thread = false);
+        explicit EventSystem_c( std::vector<std::string> namelist, const std::vector<Subscriber_t> &subs = {}, bool own_thread = false);
         EventSystem_c() = delete;
         EventSystem_c(const EventSystem_c &other) = delete;
 

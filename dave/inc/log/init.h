@@ -26,4 +26,4 @@ using InitList_t = std::vector<InitInfo_t>;
 //  - what formatting style to use
 void Init(const InitList_t &initlist);
 
-}
+} // namespace dave::log

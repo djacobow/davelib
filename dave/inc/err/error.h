@@ -32,16 +32,16 @@ EH_DECL_ENUM_STRINGIFIER(errors_s_to_string, etype_e);
 
 class Error_c {
     public:
-        Error_c(etype_e t,
+        explicit Error_c(etype_e t,
             std::string msg = "",
             std::string file = "",
             std::string func = "",
-            const size_t line = 0
+             size_t line = 0
         );
-        bool ok() const;
-        std::string why() const;
-        std::string ename() const;
-        etype_e error() const;
+        [[nodiscard]] bool Ok() const;
+        [[nodiscard]] std::string Why() const;
+        [[nodiscard]] std::string Ename() const;
+        [[nodiscard]] etype_e Error() const;
 
     private:
         etype_e etype_;
@@ -51,7 +51,7 @@ class Error_c {
         size_t line_;
 };
 
-}
+} // namespace dave::err
 
 
 // short macro that will create an error from scratch, with minimal fuss and with the location info

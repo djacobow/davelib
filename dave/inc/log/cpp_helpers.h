@@ -5,8 +5,6 @@
     #error "A given translation unit should include the c_helpers.h file or the cpp_helpers.h file, but not both"
 #endif
 
-#include "dave/inc/log/logger.hpp"
-
 // a shortcut to conjure up the logger object:
 #define LOGGER dave::log::Logger_c::Get()
 

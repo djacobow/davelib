@@ -8,7 +8,7 @@
 
 namespace dave::err {
 
-EH_IMPL_ENUM_STRINGIFIER(etype_e_to_string, etype_e, DAVE_ERRORS);
+static EH_IMPL_ENUM_STRINGIFIER(etype_e_to_string, etype_e, DAVE_ERRORS);
 
 Error_c::Error_c(etype_e t, std::string msg, std::string file, std::string func, size_t line) :
     etype_(t),
@@ -18,19 +18,19 @@ Error_c::Error_c(etype_e t, std::string msg, std::string file, std::string func,
     line_(line) {
 }
 
-auto Error_c::ok() const -> bool {
+auto Error_c::Ok() const -> bool {
     return etype_ == etype_e::ok;
 }
 
-auto Error_c::error() const -> etype_e {
+auto Error_c::Error() const -> etype_e {
     return etype_;
 }
 
-auto Error_c::ename() const -> std::string {
+auto Error_c::Ename() const -> std::string {
     return etype_e_to_string(etype_);
 }
 
-auto Error_c::why() const -> std::string {
+auto Error_c::Why() const -> std::string {
     std::stringstream ss;
     if (file_.empty()) {
         ss << "[type: " << etype_e_to_string(etype_) << "]: " << message_;

@@ -1,5 +1,4 @@
 #include "dave/inc/event/event.h"
-#include "dave/inc/log/log.h"
 
 namespace dave::event {
 

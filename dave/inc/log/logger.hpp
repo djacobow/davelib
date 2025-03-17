@@ -2,7 +2,6 @@
 
 #include <string>
 #include <sstream>
-#include <iostream>
 #include <map>
 #include <memory>
 #include <cstdarg>
@@ -10,7 +9,6 @@
 
 #include "dave/inc/log/subscriber.h"
 #include "dave/inc/log/levels.h"
-#include "dave/inc/log/styles.h"
 
 namespace dave::log {
 
@@ -38,17 +36,17 @@ class Logger_c {
     void Log(
         const Level_e &level,
         const std::string &filename,
-        const size_t line,
+        size_t line,
         const std::string &funcname,
         // Not this is purposefully not a ref to avoid UB associated
         // with starting varargs from a reference:
-        const std::string fmt,
+         std::string fmt,
         ...
     );
     void Log(
         const Level_e &level,
         const std::string &filename,
-        const size_t line,
+        size_t line,
         const std::string &funcname,
         const std::string &fmt,
         va_list args
@@ -71,5 +69,5 @@ class Logger_c {
     std::mutex mtx_;
 };
 
-}  // namespace dave::log
+} // namespace dave::log
 

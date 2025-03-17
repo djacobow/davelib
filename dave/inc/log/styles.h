@@ -14,5 +14,5 @@ enum class Style_e {
 
 std::string Style(Style_e style, const Message_c &m);
 
-}
+} // namespace dave::log
 

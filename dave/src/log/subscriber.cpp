@@ -6,7 +6,6 @@
 #include <unistd.h>
 
 #include "dave/inc/log/colorize.h"
-#include "dave/inc/log/formatters.h"
 #include "dave/inc/log/message.h"
 #include "dave/inc/util/strutil.h"
 #include "dave/inc/log/styles.h"

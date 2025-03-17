@@ -2,10 +2,9 @@
 
 #include <cstdint>
 #include <vector>
-#include <string>
 
 #include "dave/inc/util/enum_helper.h"
-#include "dave/inc/log/levels_names.h"
+#include "dave/inc/log/levels_names.h" // NOLINT needed for LOG_LEVELS
 
 namespace dave::log {
 
@@ -23,7 +22,7 @@ class LevelMask_c {
     LevelMask_c &Set(Level_e l);
     LevelMask_c &Clear(const std::vector<Level_e> &ls);
     LevelMask_c &Set(const std::vector<Level_e> &ls);
-    bool Contains(Level_e l) const;
+    [[nodiscard]] bool Contains(Level_e l) const;
 
   private:
     uint32_t mask_;
@@ -31,5 +30,5 @@ class LevelMask_c {
 
 uint32_t LevelToMask(const Level_e &l);
 
-}  // namespace dave:log 
+} // namespace dave::log
 

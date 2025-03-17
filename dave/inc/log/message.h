@@ -17,5 +17,5 @@ class Message_c {
     std::string message;
 };
 
-}
+} // namespace dave::log
 

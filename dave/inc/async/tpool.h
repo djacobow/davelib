@@ -7,9 +7,9 @@ namespace dave::async {
 class ThreadPool_c {
     public:
         using Fn_c = std::function<void()>;
-        ThreadPool_c(uint32_t tcount);
+        explicit ThreadPool_c(uint32_t tcount);
         bool Start();
-        bool Running() const;
+        [[nodiscard]] bool Running() const;
         bool Stop(bool wait_empty = false);
         bool Add(Fn_c f);
 
@@ -23,5 +23,5 @@ class ThreadPool_c {
 
 };
 
-}
+} // namespace dave::async
 
