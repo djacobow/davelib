@@ -2,16 +2,27 @@ NPROCS = $(shell grep -c 'processor' /proc/cpuinfo)
 
 MAKEFLAGS += -j$(NPROCS)
 
-CPP=g++
-CC=gcc
-CPPFLAGS=-std=c++20 ${CFLAGS}
-
-#CPP=clang++-19
-#CC=clang-19
-#CPPFLAGS=-std=c++20 -stdlib=libc++ ${CFLAGS}
+compiler_choice=clang19
 
 CFLAGS=-Wall -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments -g -Og -I.
+
+ifeq ($(compiler_choice),clang19)
+	CPP=clang++-19
+	CC=clang-19
+else
+	CPP=g++
+	CC=gcc
+endif
+
+CPPFLAGS=-std=c++20 ${CFLAGS}
+
 CT=clang-tidy-19
+
+MACHINE=$(shell uname -m)
+
+ifeq ($(MACHINE),aarch64)
+	CPPFLAGS+=-stdlib=libc++
+endif
 
 DEPDIR=./deps
 

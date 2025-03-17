@@ -8,7 +8,7 @@ namespace dave::util {
 dave::err::ValueOr_c<TerminalDimensions_t> GetTerminalDimensions() {
 #ifdef __linux__
     struct winsize ws = {};
-    int fail = ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
+    const int fail = ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
     if (fail) {
         return E_(unavailable, "could not get terminal info");
     }

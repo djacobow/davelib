@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "dave/inc/err/valueor.hpp"
 
 namespace dave::util {
