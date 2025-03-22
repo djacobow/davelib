@@ -48,5 +48,5 @@ Finally, you can instantiate the function to get the strings:
     EH_DECL_ENUM_STRINGIFIER(NAME, TYPENAME) { \
         static const std::array names = {LIST(EH_MAKE_STR)}; \
         auto idx = static_cast<std::underlying_type_t<decltype(t)> >(t); \
-        return std::string(names[idx]); \
+        return std::string(names[static_cast<unsigned>(idx)]); \
     }

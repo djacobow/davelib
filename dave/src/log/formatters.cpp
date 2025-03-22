@@ -40,11 +40,18 @@ auto ToPrettyDetails(const Message_c &m) -> std::string {
 
 
 auto ToTightDetails(const Message_c &m) -> std::string {
-    static Message_c last_m = { .tstamp = dave::time::DTime(0) };
+    static Message_c last_m = {
+		.tstamp = dave::time::DTime(0),
+		.level = Level_e::begin,
+		.filename = "",
+        .line = 0,
+		.funcname = "",
+		.message = "",
+	};
     std::stringstream os;
     const auto lines = dave::str::split(m.message, dave::str::newline);
-    const uint32_t num_lines = lines.size();
-    for (uint32_t i=0; i<num_lines; i++) {
+    const auto num_lines = lines.size();
+    for (size_t i=0; i<num_lines; i++) {
         os << dave::str::stringOrSpace(last_m.tstamp.SameMillis(m.tstamp), m.tstamp.Iso8601()) << " | "
            << std::setw(LEVEL_NAME_WIDTH)
            << dave::str::stringOrSpace(m.level    == last_m.level,    get_Level_e_str(m.level)) << " | "

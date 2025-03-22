@@ -15,18 +15,18 @@ class DTime {
     DTime() : ts_(Clock::now()) {};
     explicit DTime(uint64_t millis) : ts_(std::chrono::milliseconds {millis}) {};
     [[nodiscard]] uint64_t Millis() const {
-        return std::chrono::duration_cast<std::chrono::milliseconds>(
+        return static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(
                    ts_.time_since_epoch()
-        ).count();
+        ).count());
     };
     [[nodiscard]] uint64_t Micros() const {
-        return std::chrono::duration_cast<std::chrono::microseconds>(
+        return static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
                    ts_.time_since_epoch()
-        ).count();
+        ).count());
     };
     [[nodiscard]] uint64_t Seconds() const {
-        return std::chrono::duration_cast<std::chrono::seconds>(ts_.time_since_epoch())
-            .count();
+        return static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::seconds>(ts_.time_since_epoch())
+            .count());
     };
     [[nodiscard]] std::string Iso8601() const {
 	const constexpr uint32_t MILLIS_PER_S = 1000;

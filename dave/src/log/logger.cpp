@@ -37,7 +37,7 @@ void Logger_c::Log(
         return;
     }
 
-    std::vector<char> buf(size + 1);
+    std::vector<char> buf(static_cast<unsigned>(size) + 1);
     va_list copy_2;
     va_copy(copy_2, args);
     vsnprintf(buf.data(), buf.size(), fmt.c_str(), copy_2);

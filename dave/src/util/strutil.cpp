@@ -2,10 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <iterator>
-#include <numeric>
 #include <cstdint>
 #include <sstream>
-#include <string_view>
 
 namespace dave::str {
 
@@ -97,9 +95,9 @@ namespace draw {
 
 auto box(const std::string &title, const std::vector<std::string> &lines, uint32_t width) -> std::string {
     const uint32_t TITLE_OVERHEAD = 5;
-    const uint32_t title_len = TITLE_OVERHEAD + title.size();
+    const uint32_t title_len = TITLE_OVERHEAD + static_cast<uint32_t>(title.size());
     if (title_len >= width) {
-        width = title_len + 1;
+        width = static_cast<uint32_t>(title_len + 1);
     }
     const uint32_t top_h_count = width - title_len;
     std::stringstream ss;
@@ -112,7 +110,7 @@ auto box(const std::string &title, const std::vector<std::string> &lines, uint32
            << newline;
     }
     for (const auto &l : lines) {
-        const uint32_t csize = l.size();
+        const uint32_t csize = static_cast<uint32_t>(l.size());
         if (csize <= width) {
             ss << draw::v << std::left << std::setw(static_cast<int>(width)) << l
                << std::setw(0);

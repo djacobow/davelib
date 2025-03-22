@@ -39,8 +39,10 @@ std::string bin2printable(const void *p, size_t l) {
 
 static uint32_t byteswap32(uint32_t in) {
     uint32_t out = in;
-    out = ((out & 0x0000ffffULL) << 16) | ((out & 0xffff0000ULL) >> 16); //NOLINT
-    out = ((out & 0x00ff00ffULL) << 8)  | ((out & 0xff00ff00ULL) >> 8);  //NOLINT
+    out = static_cast<uint32_t>((out & 0x0000ffffUL) << 16) |
+		  static_cast<uint32_t>((out & 0xffff0000UL) >> 16); //NOLINT
+    out = static_cast<uint32_t>((out & 0x00ff00ffUL) << 8)  |
+		  static_cast<uint32_t>((out & 0xff00ff00UL) >> 8);  //NOLINT
     return out;
 };
 

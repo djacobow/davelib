@@ -4,7 +4,7 @@ MAKEFLAGS += -j$(NPROCS)
 
 compiler_choice=clang19
 
-CFLAGS=-Wall -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments -g -Og -I.
+CFLAGS=-Wall -Wconversion -Wextra -Werror -Wpedantic -Wno-gnu-zero-variadic-macro-arguments -g -Og -I.
 
 ifeq ($(compiler_choice),clang19)
 	CPP=clang++-19
