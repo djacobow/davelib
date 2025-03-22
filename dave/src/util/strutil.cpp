@@ -110,7 +110,7 @@ auto box(const std::string &title, const std::vector<std::string> &lines, uint32
            << newline;
     }
     for (const auto &l : lines) {
-        const uint32_t csize = static_cast<uint32_t>(l.size());
+        const auto csize = static_cast<uint32_t>(l.size());
         if (csize <= width) {
             ss << draw::v << std::left << std::setw(static_cast<int>(width)) << l
                << std::setw(0);
